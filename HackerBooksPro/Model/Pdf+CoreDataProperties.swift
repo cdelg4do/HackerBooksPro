@@ -17,7 +17,7 @@ extension Pdf {
     }
 
     @NSManaged public var url: String?
-    @NSManaged public var data: NSData?
+    @NSManaged public var pdfData: NSData?
     @NSManaged public var book: Book?
 
 }

@@ -16,7 +16,7 @@ extension Cover {
         return NSFetchRequest<Cover>(entityName: "Cover");
     }
 
-    @NSManaged public var data: NSData?
+    @NSManaged public var coverData: NSData?
     @NSManaged public var url: String?
     @NSManaged public var book: Book?
 

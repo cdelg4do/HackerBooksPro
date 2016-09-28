@@ -17,7 +17,7 @@
         <relationship name="tag" maxCount="1" deletionRule="Nullify" destinationEntity="Tag" inverseName="bookTags" inverseEntity="Tag" syncable="YES"/>
     </entity>
     <entity name="Cover" representedClassName="Cover" syncable="YES">
-        <attribute name="data" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="coverData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="url" attributeType="String" syncable="YES"/>
         <relationship name="book" maxCount="1" deletionRule="Deny" destinationEntity="Book" inverseName="cover" inverseEntity="Book" syncable="YES"/>
     </entity>
@@ -25,24 +25,24 @@
         <attribute name="address" attributeType="String" syncable="YES"/>
         <attribute name="latitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="longitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="note" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Note" inverseName="location" inverseEntity="Note" syncable="YES"/>
+        <relationship name="note" maxCount="1" deletionRule="Nullify" destinationEntity="Note" inverseName="location" inverseEntity="Note" syncable="YES"/>
     </entity>
     <entity name="Note" representedClassName="Note" syncable="YES">
         <attribute name="creationDate" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="modificationDate" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="page" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="book" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Book" inverseName="notes" inverseEntity="Book" syncable="YES"/>
+        <relationship name="book" maxCount="1" deletionRule="Nullify" destinationEntity="Book" inverseName="notes" inverseEntity="Book" syncable="YES"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Location" inverseName="note" inverseEntity="Location" syncable="YES"/>
         <relationship name="photo" maxCount="1" deletionRule="Cascade" destinationEntity="Photo" inverseName="note" inverseEntity="Photo" syncable="YES"/>
     </entity>
     <entity name="Pdf" representedClassName="Pdf" syncable="YES">
-        <attribute name="data" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="pdfData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="url" attributeType="String" syncable="YES"/>
-        <relationship name="book" optional="YES" maxCount="1" deletionRule="Deny" destinationEntity="Book" inverseName="pdf" inverseEntity="Book" syncable="YES"/>
+        <relationship name="book" maxCount="1" deletionRule="Deny" destinationEntity="Book" inverseName="pdf" inverseEntity="Book" syncable="YES"/>
     </entity>
     <entity name="Photo" representedClassName="Photo" syncable="YES">
-        <attribute name="data" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="photoData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <relationship name="note" maxCount="1" deletionRule="Deny" destinationEntity="Note" inverseName="photo" inverseEntity="Note" syncable="YES"/>
     </entity>
     <entity name="Tag" representedClassName="Tag" syncable="YES">
@@ -51,14 +51,14 @@
         <relationship name="bookTags" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="BookTag" inverseName="tag" inverseEntity="BookTag" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Author" positionX="-702" positionY="-612" width="128" height="75"/>
-        <element name="Book" positionX="-479" positionY="-612" width="128" height="135"/>
-        <element name="BookTag" positionX="-270" positionY="-579" width="128" height="75"/>
-        <element name="Cover" positionX="-360" positionY="-567" width="128" height="90"/>
-        <element name="Tag" positionX="-38" positionY="-585" width="128" height="90"/>
-        <element name="Photo" positionX="-495" positionY="-567" width="128" height="75"/>
-        <element name="Pdf" positionX="-486" positionY="-558" width="128" height="90"/>
-        <element name="Location" positionX="-477" positionY="-549" width="128" height="105"/>
-        <element name="Note" positionX="-468" positionY="-540" width="128" height="150"/>
+        <element name="Author" positionX="-729" positionY="-1029" width="128" height="75"/>
+        <element name="Book" positionX="-479" positionY="-927" width="128" height="135"/>
+        <element name="BookTag" positionX="-279" positionY="-963" width="128" height="75"/>
+        <element name="Cover" positionX="-722" positionY="-909" width="128" height="88"/>
+        <element name="Tag" positionX="-92" positionY="-972" width="128" height="90"/>
+        <element name="Photo" positionX="-92" positionY="-747" width="128" height="73"/>
+        <element name="Pdf" positionX="-729" positionY="-792" width="128" height="88"/>
+        <element name="Location" positionX="-479" positionY="-702" width="128" height="103"/>
+        <element name="Note" positionX="-281" positionY="-819" width="128" height="148"/>
     </elements>
 </model>
