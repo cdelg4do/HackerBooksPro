@@ -1,0 +1,339 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		077E28B61D8F1B91003CD758 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077E28B51D8F1B91003CD758 /* AppDelegate.swift */; };
+		077E28BD1D8F1B91003CD758 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 077E28BC1D8F1B91003CD758 /* Assets.xcassets */; };
+		077E28C01D8F1B91003CD758 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 077E28BE1D8F1B91003CD758 /* LaunchScreen.storyboard */; };
+		077E28C91D8F1BB1003CD758 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 077E28C71D8F1BB1003CD758 /* Model.xcdatamodeld */; };
+		07AE219F1D9B5A250080748B /* book_cover.png in Resources */ = {isa = PBXBuildFile; fileRef = 07AE219E1D9B5A250080748B /* book_cover.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		077E28B21D8F1B91003CD758 /* HackerBooksPro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HackerBooksPro.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		077E28B51D8F1B91003CD758 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		077E28BC1D8F1B91003CD758 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		077E28BF1D8F1B91003CD758 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		077E28C11D8F1B91003CD758 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		077E28C81D8F1BB1003CD758 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		07AE219E1D9B5A250080748B /* book_cover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = book_cover.png; path = Resources/book_cover.png; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		077E28AF1D8F1B91003CD758 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		077E28A91D8F1B91003CD758 = {
+			isa = PBXGroup;
+			children = (
+				077E28B41D8F1B91003CD758 /* HackerBooksPro */,
+				077E28B31D8F1B91003CD758 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		077E28B31D8F1B91003CD758 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				077E28B21D8F1B91003CD758 /* HackerBooksPro.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		077E28B41D8F1B91003CD758 /* HackerBooksPro */ = {
+			isa = PBXGroup;
+			children = (
+				077E28B51D8F1B91003CD758 /* AppDelegate.swift */,
+				077E28BC1D8F1B91003CD758 /* Assets.xcassets */,
+				077E28BE1D8F1B91003CD758 /* LaunchScreen.storyboard */,
+				077E28C11D8F1B91003CD758 /* Info.plist */,
+				07AE219D1D9B55030080748B /* Controllers */,
+				07AE219B1D9B54C40080748B /* Model */,
+				07AE219C1D9B54E60080748B /* Resources */,
+			);
+			path = HackerBooksPro;
+			sourceTree = "<group>";
+		};
+		07AE219B1D9B54C40080748B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				077E28C71D8F1BB1003CD758 /* Model.xcdatamodeld */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		07AE219C1D9B54E60080748B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				07AE219E1D9B5A250080748B /* book_cover.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		07AE219D1D9B55030080748B /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		077E28B11D8F1B91003CD758 /* HackerBooksPro */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 077E28C41D8F1B91003CD758 /* Build configuration list for PBXNativeTarget "HackerBooksPro" */;
+			buildPhases = (
+				077E28AE1D8F1B91003CD758 /* Sources */,
+				077E28AF1D8F1B91003CD758 /* Frameworks */,
+				077E28B01D8F1B91003CD758 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HackerBooksPro;
+			productName = HackerBooksPro;
+			productReference = 077E28B21D8F1B91003CD758 /* HackerBooksPro.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		077E28AA1D8F1B91003CD758 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0800;
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = KeepCoding;
+				TargetAttributes = {
+					077E28B11D8F1B91003CD758 = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = G28A65M86E;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 077E28AD1D8F1B91003CD758 /* Build configuration list for PBXProject "HackerBooksPro" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 077E28A91D8F1B91003CD758;
+			productRefGroup = 077E28B31D8F1B91003CD758 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				077E28B11D8F1B91003CD758 /* HackerBooksPro */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		077E28B01D8F1B91003CD758 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07AE219F1D9B5A250080748B /* book_cover.png in Resources */,
+				077E28C01D8F1B91003CD758 /* LaunchScreen.storyboard in Resources */,
+				077E28BD1D8F1B91003CD758 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		077E28AE1D8F1B91003CD758 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				077E28B61D8F1B91003CD758 /* AppDelegate.swift in Sources */,
+				077E28C91D8F1BB1003CD758 /* Model.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		077E28BE1D8F1B91003CD758 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				077E28BF1D8F1B91003CD758 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		077E28C21D8F1B91003CD758 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		077E28C31D8F1B91003CD758 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		077E28C51D8F1B91003CD758 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = G28A65M86E;
+				INFOPLIST_FILE = HackerBooksPro/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.Keepcoding.HackerBooksPro;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		077E28C61D8F1B91003CD758 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = G28A65M86E;
+				INFOPLIST_FILE = HackerBooksPro/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = io.Keepcoding.HackerBooksPro;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		077E28AD1D8F1B91003CD758 /* Build configuration list for PBXProject "HackerBooksPro" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				077E28C21D8F1B91003CD758 /* Debug */,
+				077E28C31D8F1B91003CD758 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		077E28C41D8F1B91003CD758 /* Build configuration list for PBXNativeTarget "HackerBooksPro" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				077E28C51D8F1B91003CD758 /* Debug */,
+				077E28C61D8F1B91003CD758 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		077E28C71D8F1BB1003CD758 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				077E28C81D8F1BB1003CD758 /* Model.xcdatamodel */,
+			);
+			currentVersion = 077E28C81D8F1BB1003CD758 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 077E28AA1D8F1B91003CD758 /* Project object */;
+}
