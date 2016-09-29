@@ -18,7 +18,7 @@ public class Pdf: NSManagedObject {
     
     // Inicializador de la clase, inicialmente sin UIImage (para los libros cuyo PDF aún no fue descargado)
     // (de conveniencia para que CoreData pueda utilizar los super.init() desde fuera)
-    convenience init(book: Book, url: String, inContext context: NSManagedObjectContext) {
+    convenience init(url: String, inContext context: NSManagedObjectContext) {
         
         // Obtenemos del contexto la entity description correspondiente al nombre anterior
         let ent = NSEntityDescription.entity(forEntityName: Pdf.entityName, in: context)!
@@ -28,9 +28,6 @@ public class Pdf: NSManagedObject {
         
         // Asignar la url indicada
         self.url = url
-        
-        // Añadir el pdf al libro indicado
-        self.book = book
     }
 
 }

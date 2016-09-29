@@ -48,7 +48,7 @@ public class Cover: NSManagedObject {
     
     // Inicializador de la clase, inicialmente sin UIImage (para los libros cuya portada aún no fue descargada)
     // (de conveniencia para que CoreData pueda utilizar los super.init() desde fuera)
-    convenience init(book: Book, url: String, inContext context: NSManagedObjectContext) {
+    convenience init(url: String, inContext context: NSManagedObjectContext) {
         
         // Obtenemos del contexto la entity description correspondiente al nombre anterior
         let ent = NSEntityDescription.entity(forEntityName: Cover.entityName, in: context)!
@@ -58,9 +58,6 @@ public class Cover: NSManagedObject {
         
         // Asignar la url indicada
         self.url = url
-        
-        // Añadir la imagen al libro indicado
-        self.book = book
     }
 
 }

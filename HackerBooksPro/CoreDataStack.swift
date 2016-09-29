@@ -34,7 +34,7 @@ struct CoreDataStack {
         
         // Obtener la url del esquema (se asume que está en el main bundle de la app)
         // e incicializar el modelo con los contenidos de dicho fichero
-        guard let modelURL = Bundle.main.url(forResource: modelName, withExtension: "mom") else {
+        guard let modelURL = Bundle.main.url(forResource: modelName, withExtension: "momd") else {
             print("\nERROR: Unable to find \(modelName) in the main bundle\n")
             return nil
         }

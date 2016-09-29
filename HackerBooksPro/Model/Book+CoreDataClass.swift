@@ -32,3 +32,58 @@ public class Book: NSManagedObject {
     }
     
 }
+
+// Extensiones de la clase
+
+extension Book {
+    
+    // Función que devuelve un string con los autores del libro, separados por comas
+    func authorsToString() -> String {
+        
+        if self.authors == nil {
+            
+            return "< Sin autor registrado >"
+        }
+        
+        var bookAuths = ""
+        var i = 0
+        
+        for author in self.authors! {
+            
+            let authorName = (author as! Author).name
+            
+            bookAuths += authorName!
+            
+            i += 1
+            if (i<(self.authors?.count)!) {  bookAuths += ", "   }
+        }
+        
+        return bookAuths
+    }
+    
+    
+    // Función que devuelve un string con los tags del libro, separados por comas
+    func tagsToString() -> String {
+        
+        if self.bookTags == nil {
+            
+            return "< Sin tags registrados >"
+        }
+        
+        var tagString = ""
+        var i = 0
+        
+        for bookTag in self.bookTags! {
+            
+            let tagName = (bookTag as! BookTag).tag?.name
+            
+            tagString += tagName!
+            
+            i += 1
+            if (i<(self.bookTags?.count)!) {  tagString += ", "   }
+        }
+        
+        return tagString
+    }
+    
+}
