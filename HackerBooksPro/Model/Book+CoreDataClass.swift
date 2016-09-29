@@ -42,7 +42,7 @@ extension Book {
         
         if self.authors == nil {
             
-            return "< Sin autor registrado >"
+            return "<This book has no authors>"
         }
         
         var bookAuths = ""
@@ -63,25 +63,39 @@ extension Book {
     
     
     // Función que devuelve un string con los tags del libro, separados por comas
+    // (si el libro tiene el tag de favorito, este aparece el primero en la cadena)
     func tagsToString() -> String {
         
-        if self.bookTags == nil {
+        if self.bookTags == nil || self.bookTags?.count == 0 {
             
-            return "< Sin tags registrados >"
+            return "<This book has no tags>"
         }
         
+        var favTagName = ""
         var tagString = ""
-        var i = 0
+        var tagCounter = 0
         
         for bookTag in self.bookTags! {
             
-            let tagName = (bookTag as! BookTag).tag?.name
-            
-            tagString += tagName!
-            
-            i += 1
-            if (i<(self.bookTags?.count)!) {  tagString += ", "   }
+            if (bookTag as! BookTag).tag?.proxyForSorting == "_favorites" {
+                favTagName = ((bookTag as! BookTag).tag?.name)!
+            }
+            else {
+                let tagName = (bookTag as! BookTag).tag?.name
+                tagString += tagName!
+                
+                tagCounter += 1
+                if (tagCounter<(self.bookTags?.count)!) {  tagString += ", "   }
+            }
         }
+        
+        
+        if favTagName != "" {
+            
+            if tagCounter > 0   {   tagString = favTagName + ", " + tagString   }
+            else                {   tagString = favTagName                      }
+        }
+        
         
         return tagString
     }

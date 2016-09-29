@@ -50,6 +50,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Función que muestra la ventana inicial de la app (listado de libros agrupados por tags)
     func showLibrary() -> () {
         
+        // Establecer el autoguardado cada 5 min.
+        //print("\nEstableciendo autoguardado de datos\n")
+        //model.autoSave(300)
+        
+        
         // Crear el fetchRequest para los datos que mostraremos inicialmente
         // (libros, de 50 en 50, ordenadas primero por tag y después por título del libro)
         let fr = NSFetchRequest<BookTag>(entityName: BookTag.entityName)
@@ -95,9 +100,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if success {
                             //UserDefaults.standard.set(true, forKey: self.jsonAlreadyDownloadedKey)
                     
-                            //print("\nGuardando datos iniciales en SQLite local...\n")
-                            //self.model.save()
-                    
                             print("\nDatos remotos descargados con éxito, mostrando librería...\n")
                             self.showLibrary()
                 }
@@ -131,8 +133,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
+    
+    // Antes de que la aplicación termine, volcamos al SQLite todos los cambios no guardados
     func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        
+        //print("\nGuardando datos antes de finalizar la app...\n")
+        //model.save()
     }
 
     

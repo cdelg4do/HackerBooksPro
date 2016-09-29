@@ -70,18 +70,16 @@ extension LibraryViewController {
     
     // Acción a realizar cuando se selecciona la fila de un libro
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-    /*
+        
         // Obtener el libro seleccionado
-        let book = fetchedResultsController?.object(at: indexPath) as! Book
+        let bookTag = fetchedResultsController?.object(at: indexPath) as! BookTag
+        let book = bookTag.book!
         
         // Crear el controlador para mostrar el libro seleccionado
-        let bookVC = BookViewController(model: book)
+        let bookVC = BookViewController(currentBook: book, context: (fetchedResultsController?.managedObjectContext)! )
         
         // Mostrar el controlador
         navigationController?.pushViewController(bookVC, animated: true)
-    */
-        
     }
     
 }

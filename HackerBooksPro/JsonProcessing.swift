@@ -184,9 +184,12 @@ func decodeBook(fromElement json: JsonDictionary, inContext context: NSManagedOb
     for authorName in bookAuthors {
         
         let thisAuthor: Author
+        let result: [Author]
         
         authorsReq.predicate = NSPredicate(format: "name == %@", authorName)
-        let result = try! context.fetch(authorsReq)
+        
+        do {    result = try context.fetch(authorsReq)  }
+        catch { throw CoreDataError.fetchRequestFailure }
         
         if result.count == 0 {  thisAuthor = Author(name: authorName, inContext: context)   }
         else                 {  thisAuthor = result.first!                                  }
@@ -200,13 +203,18 @@ func decodeBook(fromElement json: JsonDictionary, inContext context: NSManagedOb
     // Por último, creamos una nueva entidad bookTag que asocie al tag con el libro
     
     let tagsReq = NSFetchRequest<Tag>(entityName: Tag.entityName)
+    tagsReq.fetchBatchSize = 50
+    tagsReq.sortDescriptors = [ NSSortDescriptor(key: "name", ascending: false) ]
     
     for tagName in bookTags {
         
         let thisTag: Tag
+        let result: [Tag]
         
         tagsReq.predicate = NSPredicate(format: "name == %@", tagName)
-        let result = try! context.fetch(tagsReq)
+        
+        do {    result = try context.fetch(tagsReq)     }
+        catch { throw CoreDataError.fetchRequestFailure }
         
         if result.count == 0 {  thisTag = Tag(name: tagName, proxyForSorting: tagName, inContext: context)  }
         else                 {  thisTag = result.first!                                                     }

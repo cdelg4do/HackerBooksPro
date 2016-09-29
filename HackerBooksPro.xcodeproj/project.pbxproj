@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		073FBD511D9D10AC00193B5A /* BookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FBD4F1D9D10AC00193B5A /* BookViewController.swift */; };
+		073FBD521D9D10AC00193B5A /* BookViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 073FBD501D9D10AC00193B5A /* BookViewController.xib */; };
+		073FBD541D9D30ED00193B5A /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FBD531D9D30ED00193B5A /* Utils.swift */; };
 		077E28B61D8F1B91003CD758 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077E28B51D8F1B91003CD758 /* AppDelegate.swift */; };
 		077E28BD1D8F1B91003CD758 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 077E28BC1D8F1B91003CD758 /* Assets.xcassets */; };
 		077E28C01D8F1B91003CD758 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 077E28BE1D8F1B91003CD758 /* LaunchScreen.storyboard */; };
@@ -38,6 +41,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		073FBD4F1D9D10AC00193B5A /* BookViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookViewController.swift; path = Controllers/BookViewController.swift; sourceTree = "<group>"; };
+		073FBD501D9D10AC00193B5A /* BookViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BookViewController.xib; path = Controllers/BookViewController.xib; sourceTree = "<group>"; };
+		073FBD531D9D30ED00193B5A /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		077E28B21D8F1B91003CD758 /* HackerBooksPro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HackerBooksPro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		077E28B51D8F1B91003CD758 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		077E28BC1D8F1B91003CD758 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -102,6 +108,7 @@
 			children = (
 				077E28B51D8F1B91003CD758 /* AppDelegate.swift */,
 				07B8AB321D9C7990008698F2 /* Errors.swift */,
+				073FBD531D9D30ED00193B5A /* Utils.swift */,
 				077E28BC1D8F1B91003CD758 /* Assets.xcassets */,
 				077E28BE1D8F1B91003CD758 /* LaunchScreen.storyboard */,
 				077E28C11D8F1B91003CD758 /* Info.plist */,
@@ -136,6 +143,8 @@
 			children = (
 				07AE21EB1D9B650A0080748B /* CoreDataTableViewController.swift */,
 				07B8AB341D9CACB7008698F2 /* LibraryViewController.swift */,
+				073FBD4F1D9D10AC00193B5A /* BookViewController.swift */,
+				073FBD501D9D10AC00193B5A /* BookViewController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -226,6 +235,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				07AE219F1D9B5A250080748B /* book_cover.png in Resources */,
+				073FBD521D9D10AC00193B5A /* BookViewController.xib in Resources */,
 				077E28C01D8F1B91003CD758 /* LaunchScreen.storyboard in Resources */,
 				077E28BD1D8F1B91003CD758 /* Assets.xcassets in Resources */,
 			);
@@ -240,6 +250,7 @@
 			files = (
 				07AE22141D9B75830080748B /* Pdf+CoreDataProperties.swift in Sources */,
 				07AE22131D9B75830080748B /* Pdf+CoreDataClass.swift in Sources */,
+				073FBD541D9D30ED00193B5A /* Utils.swift in Sources */,
 				07B8AB311D9C13BA008698F2 /* JsonProcessing.swift in Sources */,
 				07AE21EA1D9B64690080748B /* CoreDataStack.swift in Sources */,
 				07B8AB331D9C7990008698F2 /* Errors.swift in Sources */,
@@ -247,6 +258,7 @@
 				07B8AB351D9CACB7008698F2 /* LibraryViewController.swift in Sources */,
 				07AE21D81D9B63B80080748B /* Author+CoreDataProperties.swift in Sources */,
 				07AE22121D9B75830080748B /* Location+CoreDataProperties.swift in Sources */,
+				073FBD511D9D10AC00193B5A /* BookViewController.swift in Sources */,
 				07AE21DD1D9B63B80080748B /* Cover+CoreDataClass.swift in Sources */,
 				07AE21E81D9B63B80080748B /* Tag+CoreDataProperties.swift in Sources */,
 				07AE21DC1D9B63B80080748B /* BookTag+CoreDataProperties.swift in Sources */,

@@ -30,3 +30,9 @@ enum FilesystemError: Error {
     
     case unableToCreateCacheFolders
 }
+
+
+enum CoreDataError: Error {
+    
+    case fetchRequestFailure
+}
