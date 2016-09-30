@@ -53,6 +53,8 @@ class BookViewController: UIViewController {
         activity?.isHidden = true
         activity?.stopAnimating()
         
+        bookCover.image = UIImage(named: "book_cover.png")
+        
         syncViewFromModel(includingCover: false)
     }
     
@@ -75,10 +77,10 @@ class BookViewController: UIViewController {
     @IBAction func showPdf(_ sender: AnyObject) {
         
         // Crear un SimplePDFViewController con los datos del modelo
-        //let pdfVC = CDASimplePDFViewController(forBook: model)
+        let pdfVC = PdfViewController(currentBook: currentBook, context: context)
         
         // Hacer un push sobre mi NavigatorController
-        //navigationController?.pushViewController(pdfVC, animated: true)
+        navigationController?.pushViewController(pdfVC, animated: true)
     }
     
     
@@ -152,23 +154,25 @@ class BookViewController: UIViewController {
         if imageData != nil {
             
             bookCover.image = UIImage(data: imageData as! Data)
+            bookCover.alpha = 1.0
         }
         
         // Si aún no hay datos de la imagen, se intenta descargar la imagen remota en segundo plano,
         // Si la descarga se realiza con éxito, se actualizan la vista y el modelo.
         else {
+            let urlString = (currentBook.cover?.url)!
             
-            print("\nDescargando imagen remota...\n(\(currentBook.cover?.url))\n")
+            print("\nDescargando imagen remota...\n(\(urlString))\n")
             
-            Utils.asyncDownloadImage(fromUrl: (currentBook.cover?.url)!, mustResize: true, activityIndicator: activity) { (image: UIImage?) in
+            Utils.asyncDownloadImage(fromUrl: urlString, mustResize: true, activityIndicator: activity) { (image: UIImage?) in
                 
                 if image != nil {
                     print("\nImagen remota descargada con éxito!\n")
                     
                     self.bookCover.image = image
+                    self.bookCover.alpha = 1.0
                     
                     self.currentBook.cover?.image = image
-                    //self.model.save()
                 }
                 else {
                     print("\nERROR: No ha sido posible cargar la imagen remota\n")

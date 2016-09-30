@@ -168,7 +168,7 @@ func decodeBook(fromElement json: JsonDictionary, inContext context: NSManagedOb
     
     // Portada y Pdf del libro (inicialmente, solo contendrán las URLs)
     let bookCover = Cover(url: imageUrlString, inContext: context)
-    let bookPdf = Pdf(url: imageUrlString, inContext: context)
+    let bookPdf = Pdf(url: pdfUrlString, inContext: context)
     
     // Creación del libro, asociando al mismo la portada y el pdf anteriores
     let newBook = Book(title: bookTitle, cover: bookCover, pdf: bookPdf, inContext: context)

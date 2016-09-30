@@ -13,10 +13,14 @@ import UIKit
 
 class Utils {
     
-    // Clausura de finalización, función que recibe un UIImage?
-    // y que se ejecutará siempre en la cola principal
+    // Clausuras de finalización, funciones que reciben un UIImage? o un Data?
+    // y que se ejecutarán siempre en la cola principal
     
     typealias imageClosure = (UIImage?) -> ()
+    
+    typealias dataClosure = (Data?) -> ()
+    
+    
     
     
     // Función que realiza la descarga de una imágen remota en segundo plano
@@ -78,6 +82,51 @@ class Utils {
         }
         
     }
+    
+    
+    
+    // Función que realiza la descarga de datos de una URL remota en segundo plano
+    // Si la descarga se realiza con éxito, produce el Data resultante.
+    // Si no, produce nil.
+    //
+    // Parámetros:
+    //
+    // - fromUrl: cadena con la url remota
+    // - activityIndicator: activa y desactiva el indicador de actividad antes y después de la operación asíncrona (si no se usa, dejar a nil)
+    // - completion: clausura de finalización que recibe un Data? resultante, que se ejecutará en la cola principal
+    
+    class func asyncDownloadData(fromUrl urlString: String, activityIndicator: UIActivityIndicatorView?, completion: @escaping dataClosure) {
+        
+        activityIndicator?.isHidden = false
+        activityIndicator?.startAnimating()
+        
+        // Carga de datos (en segundo plano)
+        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + .seconds(1) ) {
+            
+            var remoteData: Data?
+            
+            do {
+                let remoteURL = URL(string: urlString)
+                
+                if remoteURL != nil {   remoteData = try Data(contentsOf: remoteURL!, options: Data.ReadingOptions.mappedIfSafe)    }
+                else                {   remoteData = nil    }
+            }
+            catch {
+                remoteData = nil
+            }
+            
+            // Pasar los datos obtenidos a la clausura de finalización (en la cola principal)
+            DispatchQueue.main.async {
+                
+                activityIndicator?.stopAnimating()
+                activityIndicator?.isHidden = true
+                
+                completion(remoteData)
+            }
+        }
+        
+    }
+    
     
     
     // Función que re-escala una imagen, para que entre dentro del CGSize indicado
