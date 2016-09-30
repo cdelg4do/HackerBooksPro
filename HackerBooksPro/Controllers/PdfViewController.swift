@@ -105,7 +105,7 @@ class PdfViewController: UIViewController {
         
         if pdfData != nil {
             
-            pdfWebView.load( pdfData as! Data, mimeType: "application/pdf", textEncodingName: "utf-8", baseURL: NSURL() as URL )
+            pdfWebView.load( pdfData as! Data, mimeType: "application/pdf", textEncodingName: "utf-8", baseURL: URL(string: ".")! )
         }
             
         // Si aún no hay datos de la imagen, se intenta descargar la imagen remota en segundo plano,
@@ -120,7 +120,7 @@ class PdfViewController: UIViewController {
                 if downloadedData != nil {
                     print("\nPdf remoto descargada con éxito!\n")
                     
-                    self.pdfWebView.load( downloadedData!, mimeType: "application/pdf", textEncodingName: "utf-8", baseURL: NSURL() as URL )
+                    self.pdfWebView.load( downloadedData!, mimeType: "application/pdf", textEncodingName: "utf-8", baseURL: URL(string: ".")! )
                     
                     self.currentBook.pdf?.pdfData = downloadedData as NSData?
                 }
