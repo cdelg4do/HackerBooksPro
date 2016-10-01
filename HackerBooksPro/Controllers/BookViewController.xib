@@ -94,7 +94,7 @@
                 </imageView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-            <point key="canvasLocation" x="-1409" y="-856"/>
+            <point key="canvasLocation" x="-1562" y="-1061"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

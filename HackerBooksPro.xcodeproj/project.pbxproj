@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		070758821D9F717D00E03064 /* NoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070758801D9F717D00E03064 /* NoteViewController.swift */; };
+		070758831D9F717D00E03064 /* NoteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 070758811D9F717D00E03064 /* NoteViewController.xib */; };
 		073FBD511D9D10AC00193B5A /* BookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FBD4F1D9D10AC00193B5A /* BookViewController.swift */; };
 		073FBD521D9D10AC00193B5A /* BookViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 073FBD501D9D10AC00193B5A /* BookViewController.xib */; };
 		073FBD541D9D30ED00193B5A /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FBD531D9D30ED00193B5A /* Utils.swift */; };
@@ -43,6 +45,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		070758801D9F717D00E03064 /* NoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NoteViewController.swift; path = Controllers/NoteViewController.swift; sourceTree = "<group>"; };
+		070758811D9F717D00E03064 /* NoteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NoteViewController.xib; path = Controllers/NoteViewController.xib; sourceTree = "<group>"; };
 		073FBD4F1D9D10AC00193B5A /* BookViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookViewController.swift; path = Controllers/BookViewController.swift; sourceTree = "<group>"; };
 		073FBD501D9D10AC00193B5A /* BookViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BookViewController.xib; path = Controllers/BookViewController.xib; sourceTree = "<group>"; };
 		073FBD531D9D30ED00193B5A /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
@@ -151,6 +155,8 @@
 				073FBD501D9D10AC00193B5A /* BookViewController.xib */,
 				07EBA1EA1D9DF90D0012832B /* PdfViewController.swift */,
 				07EBA1EB1D9DF90D0012832B /* PdfViewController.xib */,
+				070758801D9F717D00E03064 /* NoteViewController.swift */,
+				070758811D9F717D00E03064 /* NoteViewController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -244,6 +250,7 @@
 				073FBD521D9D10AC00193B5A /* BookViewController.xib in Resources */,
 				077E28C01D8F1B91003CD758 /* LaunchScreen.storyboard in Resources */,
 				07EBA1EF1D9E23140012832B /* book_cover.png in Resources */,
+				070758831D9F717D00E03064 /* NoteViewController.xib in Resources */,
 				077E28BD1D8F1B91003CD758 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -263,6 +270,7 @@
 				07B8AB331D9C7990008698F2 /* Errors.swift in Sources */,
 				07AE21D91D9B63B80080748B /* Book+CoreDataClass.swift in Sources */,
 				07EBA1EC1D9DF90D0012832B /* PdfViewController.swift in Sources */,
+				070758821D9F717D00E03064 /* NoteViewController.swift in Sources */,
 				07B8AB351D9CACB7008698F2 /* LibraryViewController.swift in Sources */,
 				07AE21D81D9B63B80080748B /* Author+CoreDataProperties.swift in Sources */,
 				07AE22121D9B75830080748B /* Location+CoreDataProperties.swift in Sources */,
