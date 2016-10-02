@@ -107,14 +107,9 @@ class NoteViewController: UIViewController {
     // Función para actualizar la vista con los datos de la nota
     func syncViewFromModel() {
         
-        let formatter = DateFormatter()
-        //formatter.dateStyle = .medium
-        //formatter.timeStyle = "HH:mm"
-        formatter.dateFormat = "dd/MM/yyyy hh:mm"
-        
         self.pageLabel.text = "  Page: \(currentNote.page)"
-        self.createdLabel.text = "  Created: " + formatter.string(from: currentNote.creationDate as! Date)
-        self.modifiedLabel.text = "  Modified: " + formatter.string(from: currentNote.modificationDate as! Date)
+        self.createdLabel.text = "  Created: " + Utils.dateToString(currentNote.creationDate!)
+        self.modifiedLabel.text = "  Modified: " + Utils.dateToString(currentNote.modificationDate!)
         self.textView.text = currentNote.text
     }
     

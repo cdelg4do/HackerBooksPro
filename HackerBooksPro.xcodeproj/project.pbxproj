@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		070758821D9F717D00E03064 /* NoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070758801D9F717D00E03064 /* NoteViewController.swift */; };
 		070758831D9F717D00E03064 /* NoteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 070758811D9F717D00E03064 /* NoteViewController.xib */; };
+		070758851DA01BBC00E03064 /* CoreDataCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070758841DA01BBC00E03064 /* CoreDataCollectionViewController.swift */; };
+		070758871DA01C4000E03064 /* NotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070758861DA01C4000E03064 /* NotesViewController.swift */; };
+		0707588A1DA1737200E03064 /* NoteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 070758891DA1737200E03064 /* NoteCell.xib */; };
+		0707588C1DA17F3200E03064 /* note_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0707588B1DA17F3200E03064 /* note_icon.png */; };
 		073FBD511D9D10AC00193B5A /* BookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FBD4F1D9D10AC00193B5A /* BookViewController.swift */; };
 		073FBD521D9D10AC00193B5A /* BookViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 073FBD501D9D10AC00193B5A /* BookViewController.xib */; };
 		073FBD541D9D30ED00193B5A /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FBD531D9D30ED00193B5A /* Utils.swift */; };
@@ -47,6 +51,10 @@
 /* Begin PBXFileReference section */
 		070758801D9F717D00E03064 /* NoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NoteViewController.swift; path = Controllers/NoteViewController.swift; sourceTree = "<group>"; };
 		070758811D9F717D00E03064 /* NoteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NoteViewController.xib; path = Controllers/NoteViewController.xib; sourceTree = "<group>"; };
+		070758841DA01BBC00E03064 /* CoreDataCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataCollectionViewController.swift; path = Controllers/CoreDataCollectionViewController.swift; sourceTree = "<group>"; };
+		070758861DA01C4000E03064 /* NotesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NotesViewController.swift; path = Controllers/NotesViewController.swift; sourceTree = "<group>"; };
+		070758891DA1737200E03064 /* NoteCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NoteCell.xib; path = Views/NoteCell.xib; sourceTree = "<group>"; };
+		0707588B1DA17F3200E03064 /* note_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = note_icon.png; path = Resources/note_icon.png; sourceTree = SOURCE_ROOT; };
 		073FBD4F1D9D10AC00193B5A /* BookViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookViewController.swift; path = Controllers/BookViewController.swift; sourceTree = "<group>"; };
 		073FBD501D9D10AC00193B5A /* BookViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BookViewController.xib; path = Controllers/BookViewController.xib; sourceTree = "<group>"; };
 		073FBD531D9D30ED00193B5A /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
@@ -95,6 +103,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		070758881DA172FD00E03064 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				070758891DA1737200E03064 /* NoteCell.xib */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		077E28A91D8F1B91003CD758 = {
 			isa = PBXGroup;
 			children = (
@@ -123,6 +139,7 @@
 				07AE219C1D9B54E60080748B /* Resources */,
 				07AE219D1D9B55030080748B /* Controllers */,
 				07AE219B1D9B54C40080748B /* Model */,
+				070758881DA172FD00E03064 /* Views */,
 			);
 			path = HackerBooksPro;
 			sourceTree = "<group>";
@@ -141,6 +158,7 @@
 		07AE219C1D9B54E60080748B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0707588B1DA17F3200E03064 /* note_icon.png */,
 				07EBA1EE1D9E23140012832B /* book_cover.png */,
 			);
 			name = Resources;
@@ -149,6 +167,7 @@
 		07AE219D1D9B55030080748B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				070758841DA01BBC00E03064 /* CoreDataCollectionViewController.swift */,
 				07AE21EB1D9B650A0080748B /* CoreDataTableViewController.swift */,
 				07B8AB341D9CACB7008698F2 /* LibraryViewController.swift */,
 				073FBD4F1D9D10AC00193B5A /* BookViewController.swift */,
@@ -157,6 +176,7 @@
 				07EBA1EB1D9DF90D0012832B /* PdfViewController.xib */,
 				070758801D9F717D00E03064 /* NoteViewController.swift */,
 				070758811D9F717D00E03064 /* NoteViewController.xib */,
+				070758861DA01C4000E03064 /* NotesViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -246,11 +266,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0707588A1DA1737200E03064 /* NoteCell.xib in Resources */,
 				07EBA1ED1D9DF90D0012832B /* PdfViewController.xib in Resources */,
 				073FBD521D9D10AC00193B5A /* BookViewController.xib in Resources */,
 				077E28C01D8F1B91003CD758 /* LaunchScreen.storyboard in Resources */,
 				07EBA1EF1D9E23140012832B /* book_cover.png in Resources */,
 				070758831D9F717D00E03064 /* NoteViewController.xib in Resources */,
+				0707588C1DA17F3200E03064 /* note_icon.png in Resources */,
 				077E28BD1D8F1B91003CD758 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -266,6 +288,7 @@
 				07AE22131D9B75830080748B /* Pdf+CoreDataClass.swift in Sources */,
 				073FBD541D9D30ED00193B5A /* Utils.swift in Sources */,
 				07B8AB311D9C13BA008698F2 /* JsonProcessing.swift in Sources */,
+				070758871DA01C4000E03064 /* NotesViewController.swift in Sources */,
 				07AE21EA1D9B64690080748B /* CoreDataStack.swift in Sources */,
 				07B8AB331D9C7990008698F2 /* Errors.swift in Sources */,
 				07AE21D91D9B63B80080748B /* Book+CoreDataClass.swift in Sources */,
@@ -287,6 +310,7 @@
 				07AE22021D9B72060080748B /* Cover+CoreDataProperties.swift in Sources */,
 				07AE22171D9B88620080748B /* Note+CoreDataClass.swift in Sources */,
 				07AE21DB1D9B63B80080748B /* BookTag+CoreDataClass.swift in Sources */,
+				070758851DA01BBC00E03064 /* CoreDataCollectionViewController.swift in Sources */,
 				07AE21E71D9B63B80080748B /* Tag+CoreDataClass.swift in Sources */,
 				07AE21E51D9B63B80080748B /* Photo+CoreDataClass.swift in Sources */,
 				077E28B61D8F1B91003CD758 /* AppDelegate.swift in Sources */,

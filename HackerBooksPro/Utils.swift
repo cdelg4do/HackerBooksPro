@@ -17,10 +17,7 @@ class Utils {
     // y que se ejecutarán siempre en la cola principal
     
     typealias imageClosure = (UIImage?) -> ()
-    
     typealias dataClosure = (Data?) -> ()
-    
-    
     
     
     // Función que realiza la descarga de una imágen remota en segundo plano
@@ -84,7 +81,6 @@ class Utils {
     }
     
     
-    
     // Función que realiza la descarga de datos de una URL remota en segundo plano
     // Si la descarga se realiza con éxito, produce el Data resultante.
     // Si no, produce nil.
@@ -128,7 +124,6 @@ class Utils {
     }
     
     
-    
     // Función que re-escala una imagen, para que entre dentro del CGSize indicado
     // (la imagen resultante mantiene su proporción original)
     // (ver https://iosdevcenters.blogspot.com/2015/12/how-to-resize-image-in-swift-in-ios.html)
@@ -157,6 +152,16 @@ class Utils {
         UIGraphicsEndImageContext()
         
         return newImage!
+    }
+    
+    
+    // Función que convierte un objeto NSDate a la correspondiente cadena de texto
+    class func dateToString(_ date: NSDate) -> String {
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy hh:mm"
+        
+        return formatter.string(from: date as Date)
     }
     
 }

@@ -27,25 +27,29 @@ class PdfViewController: UIViewController {
         didSet {
             DispatchQueue.global(qos: .userInitiated).async {
                 
-                // Si la nueva página ya tiene alguna nota,
-                // se habilita el botón de ver la nota creada y se deshabilita el de crear nota
-                if self.hasNotes(pageNumber: self.lastPageShown) {
+                if (self.lastPageShown > 0) {
                     
-                    DispatchQueue.main.async {
-                        print("\nLa nueva página (\(self.lastPageShown)) SÍ tiene alguna nota asociada\n")
-                        self.viewNoteButton.isEnabled = true
-                        self.newNoteButton.isEnabled = false
+                    // Si la nueva página ya tiene alguna nota,
+                    // se habilita el botón de ver la nota creada y se deshabilita el de crear nota
+                    if self.hasNotes(pageNumber: self.lastPageShown) {
+                        
+                        DispatchQueue.main.async {
+                            print("\nLa página (\(self.lastPageShown)) SÍ tiene alguna nota asociada\n")
+                            self.viewNoteButton.isEnabled = true
+                            self.newNoteButton.isEnabled = false
+                        }
+                    }
+                        // Si no, se deshabilita el botón de ver la nota creada y se habilita el de crear nota
+                    else {
+                        
+                        DispatchQueue.main.async {
+                            print("\nLa página (\(self.lastPageShown)) NO tiene notas asociadas\n")
+                            self.viewNoteButton.isEnabled = false
+                            self.newNoteButton.isEnabled = true
+                        }
                     }
                 }
-                // Si no, se deshabilita el botón de ver la nota creada y se habilita el de crear nota
-                else {
-                    
-                    DispatchQueue.main.async {
-                        print("\nLa nueva página (\(self.lastPageShown)) NO tiene notas asociadas\n")
-                        self.viewNoteButton.isEnabled = false
-                        self.newNoteButton.isEnabled = true
-                    }
-                }
+            
             }
         }
         
@@ -150,7 +154,6 @@ class PdfViewController: UIViewController {
     
     
     //MARK: Funciones auxiliares
-    
     
     // Función que cada cierto tiempo actualiza el contador de la página actual
     // (solo si hubo cambios desde la vez anterior)

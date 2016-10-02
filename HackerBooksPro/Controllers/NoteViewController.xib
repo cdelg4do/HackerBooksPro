@@ -42,7 +42,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FOf-Tf-6xp">
-                    <frame key="frameInset" minX="2" height="43" maxX="-1" maxY="1"/>
+                    <frame key="frameInset" minX="2" height="44" maxX="-1" maxY="1"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <items>
                         <barButtonItem systemItem="camera" id="CKm-9j-k2H">
@@ -59,7 +59,7 @@
                     </items>
                 </toolbar>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="&lt;Note text&gt;" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="bEk-ZQ-1xY">
-                    <frame key="frameInset" minX="18" minY="161" maxX="15" maxY="61"/>
+                    <frame key="frameInset" minX="18" minY="161" maxX="15" maxY="60"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>

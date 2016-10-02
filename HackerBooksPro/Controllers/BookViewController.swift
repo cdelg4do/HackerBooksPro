@@ -118,13 +118,27 @@ class BookViewController: UIViewController {
         }
         
         // Por último, actualizar la vista con la información actualizada y salvar
-        syncViewFromModel(includingCover: false)    }
+        syncViewFromModel(includingCover: false)
+    }
     
     
     // Botón de mostrar las notas del presente libro
     @IBAction func showNotes(_ sender: AnyObject) {
         
+        // FetchRequest para los datos que se mostrarán
+        // (las notas de este libro, cargadas de 50 en 50, ordenadas por página)
+        let fr = NSFetchRequest<Note>(entityName: Note.entityName)
+        fr.predicate = NSPredicate(format: "book == %@", currentBook)
+        fr.fetchBatchSize = 50
+        fr.sortDescriptors = [ NSSortDescriptor(key: "page", ascending: true) ]
         
+        // Crear el fetchResultsController
+        let fc = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        
+        // Crear el controlador que mostrará las libretas y mostrarlo
+        let notesVC = NotesViewController(bookTitle: currentBook.title!, fetchedResultsController: fc as! NSFetchedResultsController<NSFetchRequestResult>)
+        
+        navigationController?.pushViewController(notesVC, animated: true)
     }
     
     
