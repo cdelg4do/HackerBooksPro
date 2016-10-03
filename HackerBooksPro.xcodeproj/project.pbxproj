@@ -16,6 +16,8 @@
 		070758931DA1C81800E03064 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070758911DA1C81800E03064 /* PhotoViewController.swift */; };
 		070758941DA1C81800E03064 /* PhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 070758921DA1C81800E03064 /* PhotoViewController.xib */; };
 		070758961DA1F03500E03064 /* no_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 070758951DA1F03500E03064 /* no_image.png */; };
+		070758991DA2230700E03064 /* Location+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070758971DA2230700E03064 /* Location+CoreDataClass.swift */; };
+		0707589A1DA2230700E03064 /* Location+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070758981DA2230700E03064 /* Location+CoreDataProperties.swift */; };
 		073FBD511D9D10AC00193B5A /* BookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FBD4F1D9D10AC00193B5A /* BookViewController.swift */; };
 		073FBD521D9D10AC00193B5A /* BookViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 073FBD501D9D10AC00193B5A /* BookViewController.xib */; };
 		073FBD541D9D30ED00193B5A /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FBD531D9D30ED00193B5A /* Utils.swift */; };
@@ -37,8 +39,6 @@
 		07AE21EC1D9B650A0080748B /* CoreDataTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AE21EB1D9B650A0080748B /* CoreDataTableViewController.swift */; };
 		07AE22021D9B72060080748B /* Cover+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AE21FF1D9B72060080748B /* Cover+CoreDataProperties.swift */; };
 		07AE22041D9B72060080748B /* Photo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AE22011D9B72060080748B /* Photo+CoreDataProperties.swift */; };
-		07AE22111D9B75830080748B /* Location+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AE220D1D9B75830080748B /* Location+CoreDataClass.swift */; };
-		07AE22121D9B75830080748B /* Location+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AE220E1D9B75830080748B /* Location+CoreDataProperties.swift */; };
 		07AE22131D9B75830080748B /* Pdf+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AE220F1D9B75830080748B /* Pdf+CoreDataClass.swift */; };
 		07AE22141D9B75830080748B /* Pdf+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AE22101D9B75830080748B /* Pdf+CoreDataProperties.swift */; };
 		07AE22171D9B88620080748B /* Note+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AE22151D9B88620080748B /* Note+CoreDataClass.swift */; };
@@ -61,6 +61,8 @@
 		070758911DA1C81800E03064 /* PhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoViewController.swift; path = Controllers/PhotoViewController.swift; sourceTree = "<group>"; };
 		070758921DA1C81800E03064 /* PhotoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PhotoViewController.xib; path = Controllers/PhotoViewController.xib; sourceTree = "<group>"; };
 		070758951DA1F03500E03064 /* no_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = no_image.png; path = Resources/no_image.png; sourceTree = SOURCE_ROOT; };
+		070758971DA2230700E03064 /* Location+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Location+CoreDataClass.swift"; path = "Model/Location+CoreDataClass.swift"; sourceTree = "<group>"; };
+		070758981DA2230700E03064 /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Location+CoreDataProperties.swift"; path = "Model/Location+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		073FBD4F1D9D10AC00193B5A /* BookViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookViewController.swift; path = Controllers/BookViewController.swift; sourceTree = "<group>"; };
 		073FBD501D9D10AC00193B5A /* BookViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BookViewController.xib; path = Controllers/BookViewController.xib; sourceTree = "<group>"; };
 		073FBD531D9D30ED00193B5A /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
@@ -84,8 +86,6 @@
 		07AE21EB1D9B650A0080748B /* CoreDataTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataTableViewController.swift; path = Controllers/CoreDataTableViewController.swift; sourceTree = "<group>"; };
 		07AE21FF1D9B72060080748B /* Cover+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Cover+CoreDataProperties.swift"; path = "Model/Cover+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		07AE22011D9B72060080748B /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Photo+CoreDataProperties.swift"; path = "Model/Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		07AE220D1D9B75830080748B /* Location+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Location+CoreDataClass.swift"; path = "Model/Location+CoreDataClass.swift"; sourceTree = "<group>"; };
-		07AE220E1D9B75830080748B /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Location+CoreDataProperties.swift"; path = "Model/Location+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		07AE220F1D9B75830080748B /* Pdf+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Pdf+CoreDataClass.swift"; path = "Model/Pdf+CoreDataClass.swift"; sourceTree = "<group>"; };
 		07AE22101D9B75830080748B /* Pdf+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Pdf+CoreDataProperties.swift"; path = "Model/Pdf+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		07AE22151D9B88620080748B /* Note+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Note+CoreDataClass.swift"; path = "Model/Note+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -197,7 +197,7 @@
 				07AE21C71D9B63B80080748B /* Book+CoreDataClass.swift */,
 				07AE21C91D9B63B80080748B /* BookTag+CoreDataClass.swift */,
 				07AE21CB1D9B63B80080748B /* Cover+CoreDataClass.swift */,
-				07AE220D1D9B75830080748B /* Location+CoreDataClass.swift */,
+				070758971DA2230700E03064 /* Location+CoreDataClass.swift */,
 				07AE22151D9B88620080748B /* Note+CoreDataClass.swift */,
 				07AE220F1D9B75830080748B /* Pdf+CoreDataClass.swift */,
 				07AE21D31D9B63B80080748B /* Photo+CoreDataClass.swift */,
@@ -206,7 +206,7 @@
 				07AE21C81D9B63B80080748B /* Book+CoreDataProperties.swift */,
 				07AE21CA1D9B63B80080748B /* BookTag+CoreDataProperties.swift */,
 				07AE21FF1D9B72060080748B /* Cover+CoreDataProperties.swift */,
-				07AE220E1D9B75830080748B /* Location+CoreDataProperties.swift */,
+				070758981DA2230700E03064 /* Location+CoreDataProperties.swift */,
 				07AE22161D9B88620080748B /* Note+CoreDataProperties.swift */,
 				07AE22101D9B75830080748B /* Pdf+CoreDataProperties.swift */,
 				07AE22011D9B72060080748B /* Photo+CoreDataProperties.swift */,
@@ -307,15 +307,14 @@
 				070758821D9F717D00E03064 /* NoteViewController.swift in Sources */,
 				07B8AB351D9CACB7008698F2 /* LibraryViewController.swift in Sources */,
 				07AE21D81D9B63B80080748B /* Author+CoreDataProperties.swift in Sources */,
-				07AE22121D9B75830080748B /* Location+CoreDataProperties.swift in Sources */,
 				073FBD511D9D10AC00193B5A /* BookViewController.swift in Sources */,
 				07AE21DD1D9B63B80080748B /* Cover+CoreDataClass.swift in Sources */,
 				07AE21E81D9B63B80080748B /* Tag+CoreDataProperties.swift in Sources */,
 				07AE21DC1D9B63B80080748B /* BookTag+CoreDataProperties.swift in Sources */,
+				0707589A1DA2230700E03064 /* Location+CoreDataProperties.swift in Sources */,
 				07AE22041D9B72060080748B /* Photo+CoreDataProperties.swift in Sources */,
 				07AE21EC1D9B650A0080748B /* CoreDataTableViewController.swift in Sources */,
 				07AE22181D9B88620080748B /* Note+CoreDataProperties.swift in Sources */,
-				07AE22111D9B75830080748B /* Location+CoreDataClass.swift in Sources */,
 				07AE21DA1D9B63B80080748B /* Book+CoreDataProperties.swift in Sources */,
 				07AE21D71D9B63B80080748B /* Author+CoreDataClass.swift in Sources */,
 				07AE22021D9B72060080748B /* Cover+CoreDataProperties.swift in Sources */,
@@ -323,6 +322,7 @@
 				07AE21DB1D9B63B80080748B /* BookTag+CoreDataClass.swift in Sources */,
 				070758851DA01BBC00E03064 /* CoreDataCollectionViewController.swift in Sources */,
 				07AE21E71D9B63B80080748B /* Tag+CoreDataClass.swift in Sources */,
+				070758991DA2230700E03064 /* Location+CoreDataClass.swift in Sources */,
 				07AE21E51D9B63B80080748B /* Photo+CoreDataClass.swift in Sources */,
 				070758931DA1C81800E03064 /* PhotoViewController.swift in Sources */,
 				077E28B61D8F1B91003CD758 /* AppDelegate.swift in Sources */,

@@ -19,6 +19,9 @@ class LibraryViewController: CoreDataTableViewController {
         super.viewDidLoad()
         
         title = "HackerBooks Pro"   // Mostrar un título
+        
+        //let searchFr = NSFetchRequest<BookTag>(entityName: BookTag.entityName)
+        //let _ = NSFetchedResultsController(fetchRequest: searchFr, managedObjectContext: (self.fetchedResultsController?.managedObjectContext)!, sectionNameKeyPath: "tag.name", cacheName: nil)
     }
     
     
@@ -83,4 +86,20 @@ extension LibraryViewController {
     }
     
 }
+
+
+//MARK: Búsqueda por texto
+
+extension LibraryViewController {
+    
+    
+    
+    
+    
+}
+
+
+
+
+
 

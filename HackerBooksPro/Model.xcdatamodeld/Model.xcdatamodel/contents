@@ -25,7 +25,7 @@
         <attribute name="address" attributeType="String" syncable="YES"/>
         <attribute name="latitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="longitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="note" maxCount="1" deletionRule="Nullify" destinationEntity="Note" inverseName="location" inverseEntity="Note" syncable="YES"/>
+        <relationship name="note" toMany="YES" deletionRule="Nullify" destinationEntity="Note" inverseName="location" inverseEntity="Note" syncable="YES"/>
     </entity>
     <entity name="Note" representedClassName="Note" syncable="YES">
         <attribute name="creationDate" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
@@ -55,10 +55,10 @@
         <element name="Book" positionX="-479" positionY="-927" width="128" height="135"/>
         <element name="BookTag" positionX="-279" positionY="-963" width="128" height="75"/>
         <element name="Cover" positionX="-722" positionY="-909" width="128" height="88"/>
-        <element name="Tag" positionX="-92" positionY="-972" width="128" height="90"/>
-        <element name="Photo" positionX="-92" positionY="-747" width="128" height="73"/>
-        <element name="Pdf" positionX="-729" positionY="-792" width="128" height="88"/>
-        <element name="Location" positionX="-479" positionY="-702" width="128" height="103"/>
+        <element name="Location" positionX="-479" positionY="-702" width="128" height="105"/>
         <element name="Note" positionX="-281" positionY="-819" width="128" height="148"/>
+        <element name="Pdf" positionX="-729" positionY="-792" width="128" height="88"/>
+        <element name="Photo" positionX="-92" positionY="-747" width="128" height="73"/>
+        <element name="Tag" positionX="-92" positionY="-972" width="128" height="90"/>
     </elements>
 </model>

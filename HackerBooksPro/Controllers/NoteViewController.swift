@@ -25,7 +25,7 @@ class NoteViewController: UIViewController {
     //MARK: Referencia a los objetos de la interfaz
     @IBOutlet weak var pageLabel: UILabel!
     @IBOutlet weak var createdLabel: UILabel!
-    @IBOutlet weak var modifiedLabel: UILabel!
+    @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var textView: UITextView!
     
     
@@ -56,7 +56,14 @@ class NoteViewController: UIViewController {
         
         if isNewNote {
             textView.selectAll(self)
-            isNewNote = false
+            
+            // Actualizar la ubicación en pantalla tras 5 segundos
+            // (porque inmediatamente después de crearse la nota aún no ha dado tiempo a hacer la geolocalización inversa)
+            let delayInNanoSeconds = UInt64(5) * NSEC_PER_SEC
+            let time = DispatchTime.now() + Double(Int64(delayInNanoSeconds)) / Double(NSEC_PER_SEC)
+            DispatchQueue.main.asyncAfter(deadline: time, execute: { self.syncLocationFromModel() } )
+            
+            self.addressLabel.text = "  Getting current address..."
         }
     }
     
@@ -107,14 +114,26 @@ class NoteViewController: UIViewController {
     // Función para actualizar la vista con los datos de la nota
     func syncViewFromModel() {
         
+        self.textView.text = currentNote.text
         self.pageLabel.text = "  Page: \(currentNote.page)"
         self.createdLabel.text = "  Created: " + Utils.dateToString(currentNote.creationDate!)
-        self.modifiedLabel.text = "  Modified: " + Utils.dateToString(currentNote.modificationDate!)
-        self.textView.text = currentNote.text
+        
+        if (!isNewNote) {
+            syncLocationFromModel()
+        }
+    }
+    
+    
+    // Función para actualizar solo la ubicación
+    func syncLocationFromModel() {
+        
+        if currentNote.hasLocation  {   self.addressLabel.text = "  Address: " + (currentNote.location?.address!)!    }
+        else                        {   self.addressLabel.text = "  Address: Unknown"  }
     }
     
     
     // Función para actualizar el modelo con los datos de la vista
+    // (solo actualizamos el texto y la fecha de última modificación)
     func syncModelFromView() {
         
         currentNote.text = self.textView.text
