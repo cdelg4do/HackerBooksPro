@@ -8,39 +8,29 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="eJW-H9-kDq">
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" id="eJW-H9-kDq">
             <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                 <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" tag="100" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="note_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="OlX-yS-bMm">
-                        <frame key="frameInset" minX="8" minY="8" width="134" height="56"/>
-                    </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" tag="200" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Content label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M1x-fK-MGf">
-                        <frame key="frameInset" minX="8" minY="72" width="134" height="70"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <label opaque="NO" userInteractionEnabled="NO" tag="200" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Cell content" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J1s-7Y-DWe">
+                        <frame key="frameInset" minX="8" width="134" height="67" maxY="8"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" tag="100" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kKi-jW-LSA">
+                        <frame key="frameInset" minX="8" minY="8" width="134" height="67"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                    </imageView>
                 </subviews>
             </view>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-            <constraints>
-                <constraint firstItem="M1x-fK-MGf" firstAttribute="leading" secondItem="eJW-H9-kDq" secondAttribute="leading" constant="8" id="CSv-1g-H3t"/>
-                <constraint firstItem="M1x-fK-MGf" firstAttribute="top" secondItem="OlX-yS-bMm" secondAttribute="bottom" constant="8" id="VLs-ih-ENm"/>
-                <constraint firstItem="OlX-yS-bMm" firstAttribute="top" secondItem="eJW-H9-kDq" secondAttribute="top" constant="8" id="ijc-s3-Zuz"/>
-                <constraint firstAttribute="trailing" secondItem="M1x-fK-MGf" secondAttribute="trailing" constant="8" id="ilK-3I-FEU"/>
-                <constraint firstAttribute="trailing" secondItem="OlX-yS-bMm" secondAttribute="trailing" constant="8" id="rGN-H4-123"/>
-                <constraint firstAttribute="bottom" secondItem="M1x-fK-MGf" secondAttribute="bottom" constant="8" id="rz0-pi-7wX"/>
-                <constraint firstItem="OlX-yS-bMm" firstAttribute="leading" secondItem="eJW-H9-kDq" secondAttribute="leading" constant="8" id="zji-T9-ya7"/>
-            </constraints>
             <size key="customSize" width="150" height="150"/>
-            <point key="canvasLocation" x="-320" y="-97"/>
+            <point key="canvasLocation" x="-998" y="-892"/>
         </collectionViewCell>
     </objects>
-    <resources>
-        <image name="note_icon.png" width="75" height="75"/>
-    </resources>
 </document>

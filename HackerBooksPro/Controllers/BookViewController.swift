@@ -132,7 +132,7 @@ class BookViewController: UIViewController {
         fr.fetchBatchSize = 50
         fr.sortDescriptors = [ NSSortDescriptor(key: "page", ascending: true) ]
         
-        // Crear el fetchResultsController
+        // Crear el fetchResultsController correspondiente
         let fc = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
         
         // Crear el controlador que mostrará las libretas y mostrarlo

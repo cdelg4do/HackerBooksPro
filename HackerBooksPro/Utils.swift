@@ -51,8 +51,7 @@ class Utils {
                     let originalImage = UIImage(data: data)!
                     
                     if mustResize {
-                        let screenSize = UIScreen.main.nativeBounds.size
-                        finalImage = Utils.resizeImage(originalImage, toSize: screenSize )
+                        finalImage = Utils.resizeImage(originalImage, toSize: screenSize() )
                     }
                     else {
                         finalImage = originalImage
@@ -154,6 +153,12 @@ class Utils {
         return newImage!
     }
     
+    
+    // Función que indica el tamaño de la pantalla del dispositivo
+    class func screenSize() -> CGSize {
+        
+        return UIScreen.main.nativeBounds.size
+    }
     
     // Función que convierte un objeto NSDate a la correspondiente cadena de texto
     class func dateToString(_ date: NSDate) -> String {

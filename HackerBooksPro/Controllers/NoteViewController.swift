@@ -85,8 +85,8 @@ class NoteViewController: UIViewController {
     @IBAction func showPicture(_ sender: AnyObject) {
         
         // Crear un PhotoViewController asociado a esa nota, y mostrarlo
-        //let photoVC = PhotoViewController(currentNote: currentNote, bookTitle: bookTitle, context: context)
-        //navigationController?.pushViewController(photoVC, animated: true)
+        let photoVC = PhotoViewController(currentNote: currentNote, context: context)
+        navigationController?.pushViewController(photoVC, animated: true)
     }
     
     

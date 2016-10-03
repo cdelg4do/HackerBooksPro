@@ -21,37 +21,37 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="  Page:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xHM-7m-oxY">
-                    <frame key="frameInset" minX="2" minY="74" height="21" maxX="-1"/>
+                    <frame key="frameInset" minX="2" minY="74" height="21"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="  Created:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="94Q-OS-JPk">
-                    <frame key="frameInset" minX="2" minY="103" height="21" maxX="-1"/>
+                    <frame key="frameInset" minX="2" minY="103" height="21"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="  Modified:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LyN-em-hNa">
-                    <frame key="frameInset" minX="2" minY="132" height="21" maxX="-1"/>
+                    <frame key="frameInset" minX="2" minY="132" height="21"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FOf-Tf-6xp">
-                    <frame key="frameInset" minX="2" height="44" maxX="-1" maxY="1"/>
+                    <frame key="frameInset" minX="2" height="43" maxY="2"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <items>
-                        <barButtonItem systemItem="camera" id="CKm-9j-k2H">
+                        <barButtonItem title="Image" id="CKm-9j-k2H">
                             <connections>
                                 <action selector="showPicture:" destination="-1" id="Yd7-IT-st4"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="9eY-Xh-C0c"/>
-                        <barButtonItem systemItem="trash" id="ywp-S5-qzA">
+                        <barButtonItem title="Discard" id="ywp-S5-qzA">
                             <connections>
                                 <action selector="deleteNote:" destination="-1" id="9bu-Cd-L3F"/>
                             </connections>
@@ -59,7 +59,7 @@
                     </items>
                 </toolbar>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="&lt;Note text&gt;" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="bEk-ZQ-1xY">
-                    <frame key="frameInset" minX="18" minY="161" maxX="15" maxY="60"/>
+                    <frame key="frameInset" minX="18" minY="160" maxX="16" maxY="62"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -67,7 +67,7 @@
                 </textView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-            <point key="canvasLocation" x="-1192" y="-65"/>
+            <point key="canvasLocation" x="-1629" y="-193"/>
         </view>
     </objects>
 </document>

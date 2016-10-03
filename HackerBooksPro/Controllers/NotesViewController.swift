@@ -13,10 +13,24 @@ import CoreData     // para usar NSFetchRequest
 
 class NotesViewController: CoreDataCollectionViewController {
     
-    //MARK: Propiedades
-    
+    //MARK: Constantes
     let cellId = "NoteCell"     // Identificador para las celdas del CollectionView
+    let cellWidth = 150         // Anchura de la celda a mostrar (en puntos)
+    let cellHeight = 150        // Altura de la celda a mostrar (en puntos)
+    let cellMargin = 8          // Márgen interior de la celda (en puntos)
+    
+    //MARK: Otras propiedades
     let bookTitle: String       // Título del libro cuyas notas se muestran
+    
+    var imageWidth: Int {
+        
+        get {   return cellWidth - 2 * (cellMargin)   }
+    }
+    
+    var imageHeight: Int {
+        
+        get {   return (cellHeight / 2) as Int - cellMargin   }
+    }
     
     
     //MARK: Inicializadores designados
@@ -25,7 +39,7 @@ class NotesViewController: CoreDataCollectionViewController {
         self.bookTitle = bookTitle
         
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.itemSize = CGSize(width: 150, height: 150)
+        flowLayout.itemSize = CGSize(width: cellWidth, height: cellHeight)
         flowLayout.scrollDirection = UICollectionViewScrollDirection.vertical
         
         super.init(fetchedResultsController: fetchedResultsController, layout: flowLayout)
@@ -70,14 +84,20 @@ extension NotesViewController {
         let cellImage = cell.viewWithTag(100) as? UIImageView
         let cellLabel = cell.viewWithTag(200) as? UILabel
         
-        // Configuración de la celda: imagen (si la nota tiene una)
-        // y texto (número de página, fecha de modificación y contenido de la nota)
+        // Configuración de la celda:
+        // - Imagen (si la nota tiene una o sino una imagen por defecto, redimensionadas para entrar en la celda)
+        // - Texto (número de página, fecha de modificación y contenido de la nota)
+        let thumbnail: UIImage
+        let thumbnailSize = CGSize(width: imageWidth, height: imageHeight)
+        
         if note.photo?.image != nil {
-            cellImage?.image = note.photo?.image
+            thumbnail = Utils.resizeImage((note.photo?.image)!, toSize: thumbnailSize)
         }
         else {
-            cellImage?.image = UIImage(named: "note_icon.png")
+            thumbnail = Utils.resizeImage(UIImage(named: "note_icon.png")!, toSize: thumbnailSize)
         }
+        
+        cellImage?.image = thumbnail
         
         var noteText = note.text
         if noteText == nil || noteText == "" {   noteText = "<No text>"  }

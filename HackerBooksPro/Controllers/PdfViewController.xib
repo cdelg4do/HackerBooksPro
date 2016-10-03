@@ -29,13 +29,13 @@
                     <frame key="frameInset" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <items>
-                        <barButtonItem systemItem="compose" id="Nga-Jl-j5P">
+                        <barButtonItem title="View Note" id="Nga-Jl-j5P">
                             <connections>
                                 <action selector="showNote:" destination="-1" id="anX-oZ-JdB"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="G8n-tN-JsD"/>
-                        <barButtonItem systemItem="add" id="Kfv-Ed-6Yg">
+                        <barButtonItem title="Add Note" id="Kfv-Ed-6Yg">
                             <connections>
                                 <action selector="createNote:" destination="-1" id="nUd-d5-9Jd"/>
                             </connections>

@@ -57,19 +57,19 @@
                     <frame key="frameInset" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <items>
-                        <barButtonItem systemItem="bookmarks" id="mW2-rl-yPo">
+                        <barButtonItem title="Read" id="mW2-rl-yPo">
                             <connections>
                                 <action selector="showPdf:" destination="-1" id="Bzp-yC-DaJ"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="CPf-D7-4tB"/>
-                        <barButtonItem systemItem="action" id="RMd-xO-b2F">
+                        <barButtonItem title="Favorite" id="RMd-xO-b2F">
                             <connections>
                                 <action selector="toggleFavorite:" destination="-1" id="Qm9-0J-8Tb"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="gvv-ff-yQ1"/>
-                        <barButtonItem systemItem="compose" id="Xay-f7-cPi">
+                        <barButtonItem title="Notes" id="Xay-f7-cPi">
                             <connections>
                                 <action selector="showNotes:" destination="-1" id="BPQ-fy-IWH"/>
                             </connections>
