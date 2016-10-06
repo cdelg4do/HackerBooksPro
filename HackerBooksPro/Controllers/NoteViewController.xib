@@ -10,6 +10,7 @@
             <connections>
                 <outlet property="addressLabel" destination="LyN-em-hNa" id="zWY-dY-Q9A"/>
                 <outlet property="createdLabel" destination="94Q-OS-JPk" id="uHs-vz-raF"/>
+                <outlet property="mapButton" destination="cwu-x6-ejq" id="lKh-rh-g0u"/>
                 <outlet property="pageLabel" destination="xHM-7m-oxY" id="sPE-DG-8xW"/>
                 <outlet property="textView" destination="bEk-ZQ-1xY" id="OnR-Fc-w0O"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -51,6 +52,12 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="9eY-Xh-C0c"/>
+                        <barButtonItem title="Map" id="cwu-x6-ejq">
+                            <connections>
+                                <action selector="showMap:" destination="-1" id="Qnp-iw-a7Q"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="lVG-TX-lFo"/>
                         <barButtonItem title="Discard" id="ywp-S5-qzA">
                             <connections>
                                 <action selector="deleteNote:" destination="-1" id="9bu-Cd-L3F"/>
@@ -59,7 +66,7 @@
                     </items>
                 </toolbar>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="&lt;Note text&gt;" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="bEk-ZQ-1xY">
-                    <frame key="frameInset" minX="18" minY="160" maxX="16" maxY="62"/>
+                    <frame key="frameInset" minX="17" minY="159" maxX="17" maxY="63"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -67,7 +74,7 @@
                 </textView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-            <point key="canvasLocation" x="-1629" y="-193"/>
+            <point key="canvasLocation" x="-1890" y="-124"/>
         </view>
     </objects>
 </document>

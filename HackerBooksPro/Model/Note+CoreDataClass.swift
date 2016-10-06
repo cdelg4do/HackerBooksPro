@@ -10,6 +10,8 @@ import Foundation
 import CoreData
 
 import CoreLocation
+import MapKit       // para el protocolo MKAnnotation
+
 
 @objc(Note)
 public class Note: NSManagedObject {
@@ -100,6 +102,44 @@ extension Note: CLLocationManagerDelegate {
         // Crear la localización y asignarla a la nota
         let _ = Location(location: lastLocation, forNote: self, inContext: self.managedObjectContext!)
     }
+}
+
+
+
+// Implementación del protocolo MKAnnotation para mostrar la ubicación de la nota en un mapa
+
+extension Note: MKAnnotation {
+    
+    public var coordinate: CLLocationCoordinate2D {
+        
+        get {
+            if self.hasLocation {
+                let lat = self.location!.latitude
+                let long = self.location!.longitude
+                return CLLocationCoordinate2D(latitude: lat, longitude: long)
+            }
+            else {
+                return CLLocationCoordinate2D()
+            }
+        }
+    }
+    
+    
+    public var title: String? {
+        
+        get {
+            return self.text
+        }
+    }
+    
+    
+    public var subtitle: String? {
+        
+        get {
+            return Utils.dateToString(self.creationDate!)
+        }
+    }
+    
 }
 
 

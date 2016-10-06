@@ -27,6 +27,7 @@ class NoteViewController: UIViewController {
     @IBOutlet weak var createdLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var mapButton: UIBarButtonItem!
     
     
     
@@ -55,15 +56,18 @@ class NoteViewController: UIViewController {
         super.viewDidLoad()
         
         if isNewNote {
-            textView.selectAll(self)
+            
+            // Usar la siguiente línea para que automáticamente pregunte seleccionar todo el texto
+            //textView.selectAll(self)
             
             // Actualizar la ubicación en pantalla tras 5 segundos
             // (porque inmediatamente después de crearse la nota aún no ha dado tiempo a hacer la geolocalización inversa)
             let delayInNanoSeconds = UInt64(5) * NSEC_PER_SEC
             let time = DispatchTime.now() + Double(Int64(delayInNanoSeconds)) / Double(NSEC_PER_SEC)
             DispatchQueue.main.asyncAfter(deadline: time, execute: { self.syncLocationFromModel() } )
-            
             self.addressLabel.text = "  Getting current address..."
+            
+            mapButton.isEnabled = false
         }
     }
     
@@ -96,6 +100,13 @@ class NoteViewController: UIViewController {
         navigationController?.pushViewController(photoVC, animated: true)
     }
     
+    // Acción al pulsar el botón de mapa
+    @IBAction func showMap(_ sender: AnyObject) {
+        
+        // Crear un NoteMapViewController asociado a esa nota, y mostrarlo
+        let mapVC = NoteMapViewController(currentNote: currentNote)
+        navigationController?.pushViewController(mapVC, animated: true)
+    }
     
     // Acción al pulsar el botón de borrar
     @IBAction func deleteNote(_ sender: AnyObject) {
@@ -127,8 +138,15 @@ class NoteViewController: UIViewController {
     // Función para actualizar solo la ubicación
     func syncLocationFromModel() {
         
-        if currentNote.hasLocation  {   self.addressLabel.text = "  Address: " + (currentNote.location?.address!)!    }
-        else                        {   self.addressLabel.text = "  Address: Unknown"  }
+        if currentNote.hasLocation  {
+            
+            self.addressLabel.text = "  Address: " + (currentNote.location?.address!)!
+            mapButton.isEnabled = true
+        }
+        else {
+            self.addressLabel.text = "  Address: Unknown"
+            mapButton.isEnabled = false
+        }
     }
     
     

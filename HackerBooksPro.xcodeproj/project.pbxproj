@@ -21,6 +21,8 @@
 		073FBD511D9D10AC00193B5A /* BookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FBD4F1D9D10AC00193B5A /* BookViewController.swift */; };
 		073FBD521D9D10AC00193B5A /* BookViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 073FBD501D9D10AC00193B5A /* BookViewController.xib */; };
 		073FBD541D9D30ED00193B5A /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FBD531D9D30ED00193B5A /* Utils.swift */; };
+		0768F2DA1DA5F7A60032F41B /* NoteMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0768F2D81DA5F7A60032F41B /* NoteMapViewController.swift */; };
+		0768F2DB1DA5F7A60032F41B /* NoteMapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0768F2D91DA5F7A60032F41B /* NoteMapViewController.xib */; };
 		077E28B61D8F1B91003CD758 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077E28B51D8F1B91003CD758 /* AppDelegate.swift */; };
 		077E28BD1D8F1B91003CD758 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 077E28BC1D8F1B91003CD758 /* Assets.xcassets */; };
 		077E28C01D8F1B91003CD758 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 077E28BE1D8F1B91003CD758 /* LaunchScreen.storyboard */; };
@@ -66,6 +68,8 @@
 		073FBD4F1D9D10AC00193B5A /* BookViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookViewController.swift; path = Controllers/BookViewController.swift; sourceTree = "<group>"; };
 		073FBD501D9D10AC00193B5A /* BookViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BookViewController.xib; path = Controllers/BookViewController.xib; sourceTree = "<group>"; };
 		073FBD531D9D30ED00193B5A /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		0768F2D81DA5F7A60032F41B /* NoteMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NoteMapViewController.swift; path = Controllers/NoteMapViewController.swift; sourceTree = "<group>"; };
+		0768F2D91DA5F7A60032F41B /* NoteMapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NoteMapViewController.xib; path = Controllers/NoteMapViewController.xib; sourceTree = "<group>"; };
 		077E28B21D8F1B91003CD758 /* HackerBooksPro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HackerBooksPro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		077E28B51D8F1B91003CD758 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		077E28BC1D8F1B91003CD758 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -183,6 +187,8 @@
 				07EBA1EB1D9DF90D0012832B /* PdfViewController.xib */,
 				070758801D9F717D00E03064 /* NoteViewController.swift */,
 				070758811D9F717D00E03064 /* NoteViewController.xib */,
+				0768F2D81DA5F7A60032F41B /* NoteMapViewController.swift */,
+				0768F2D91DA5F7A60032F41B /* NoteMapViewController.xib */,
 				070758861DA01C4000E03064 /* NotesViewController.swift */,
 				070758911DA1C81800E03064 /* PhotoViewController.swift */,
 				070758921DA1C81800E03064 /* PhotoViewController.xib */,
@@ -279,6 +285,7 @@
 				0707588A1DA1737200E03064 /* NoteCell.xib in Resources */,
 				07EBA1ED1D9DF90D0012832B /* PdfViewController.xib in Resources */,
 				073FBD521D9D10AC00193B5A /* BookViewController.xib in Resources */,
+				0768F2DB1DA5F7A60032F41B /* NoteMapViewController.xib in Resources */,
 				070758961DA1F03500E03064 /* no_image.png in Resources */,
 				077E28C01D8F1B91003CD758 /* LaunchScreen.storyboard in Resources */,
 				07EBA1EF1D9E23140012832B /* book_cover.png in Resources */,
@@ -319,6 +326,7 @@
 				07AE21D71D9B63B80080748B /* Author+CoreDataClass.swift in Sources */,
 				07AE22021D9B72060080748B /* Cover+CoreDataProperties.swift in Sources */,
 				07AE22171D9B88620080748B /* Note+CoreDataClass.swift in Sources */,
+				0768F2DA1DA5F7A60032F41B /* NoteMapViewController.swift in Sources */,
 				07AE21DB1D9B63B80080748B /* BookTag+CoreDataClass.swift in Sources */,
 				070758851DA01BBC00E03064 /* CoreDataCollectionViewController.swift in Sources */,
 				07AE21E71D9B63B80080748B /* Tag+CoreDataClass.swift in Sources */,
