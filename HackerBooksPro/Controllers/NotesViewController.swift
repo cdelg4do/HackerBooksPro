@@ -116,6 +116,12 @@ extension NotesViewController {
         
         // Crear el controlador para mostrar la nota seleccionada, y mostrarlo
         let noteVC = NoteViewController(currentNote: selectedNote, bookTitle: title!, isNewNote: false, context: (fetchedResultsController?.managedObjectContext)! )
+        
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Save",
+                                                           style: UIBarButtonItemStyle.plain,
+                                                           target: nil,
+                                                           action: nil)
+        
         self.navigationController?.pushViewController(noteVC, animated: true)
     }
     

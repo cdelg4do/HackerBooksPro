@@ -3,7 +3,6 @@
 //  HackerBooksPro
 //
 //  Created by Carlos Delgado on 18/09/16.
-//  Copyright © 2016 KeepCoding. All rights reserved.
 //
 
 import UIKit
@@ -17,20 +16,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     
-    // Modelo de datos
-    // (CoreDataStack() devuelve un opcional, lo forzamos para que la app casque en caso de devolver nil)
+    // Data Model
+    // (CoreDataStack() returns an optional, we force to be not nil so that app will crash in that case
     let model = CoreDataStack(modelName: "Model")!
     
-    // Url de descarga del JSON remoto con la información de los libros
+    // URL of the remote JSON that contains the info about the books
     let remoteJsonUrlString = "https://t.co/K9ziV0z3SJ"
     
-    // Key para el flag que indica que ya se cargó el JSON en el pasado
+    // Key for the flag that indicates if the JSON was already downloaded in previous executions
     let jsonAlreadyDownloadedKey = "JSON Already Downloaded on this device"
     
-    // Variable que determina si hay que indicar en el título de la librería que se están cargando datos descargados
+    // Flag that indicates if the table title should show that the data shown have just been downloaded
+    // (if false, means that the data are already cached)
     var showTitleNewData = false
     
-    // Variable que discrimina si el hardware es una tablet o no
+    // Computed variable that indicates if the device hardware is a tablet or not
     var HARDWARE_IS_IPAD: Bool {
         get {
             if UIDevice.current.userInterfaceIdiom == .pad { return true }
@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    // Variable que discrimina si el fichero JSON remoto ya fue descargado en anteriores ejecuciones del programa
+    // Computed variable that indicates if the JSON file was already downloaded in previous executions
     var JSON_ALREADY_DOWNLOADED: Bool {
         
         get {
@@ -47,52 +47,48 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     
-    // Función que muestra la ventana inicial de la app (listado de libros agrupados por tags)
+    // Shows the initial screen of the app (list of books, grouped by tags)
     func showLibrary() -> () {
         
-        // Establecer el autoguardado cada 5 min.
-        //print("\nEstableciendo autoguardado de datos\n")
+        // Sets the autosave each 5 min.
+        //print("\nSetting autosave\n")
         //model.autoSave(300)
         
         
-        // Crear el fetchRequest para los datos que mostraremos inicialmente
-        // (libros, de 50 en 50, ordenadas primero por tag y después por título del libro)
+        // Create the fetchRequest for the data initially shown
+        // (nooks, loaded in blocks of 50, sorted by tag and then by title)
         let fr = NSFetchRequest<BookTag>(entityName: BookTag.entityName)
         fr.fetchBatchSize = 50
         fr.sortDescriptors = [ NSSortDescriptor(key: "tag.proxyForSorting", ascending: true),
                                NSSortDescriptor(key: "book.title", ascending: true) ]
         
-        // Crear el fetchResultsController
-        // (el valor de sectionNameKeyPath permite que la propia tabla organizará las secciones por esa propiedad)
-        // (cacheName es el nombre de un fichero intermedio entre SQLite y memoria, permite alererar algo las búsquedas)
+        // Create the fetchResultsController
+        // (the value of sectionNameKeyPath lets the table itself to use that property as sections)
+        // (cacheName is the name of an optional file to cache data from SQLite, improves the queries speed)
         let fc = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: model.context, sectionNameKeyPath: "tag.name", cacheName: nil)
         
         
-        // Crear el controlador que mostrará las libretas
+        // Create the controller to show the books, and the navigation controller
         let nVC = LibraryViewController(fetchedResultsController: fc as! NSFetchedResultsController<NSFetchRequestResult>, style: .plain)
-        
-        // Crear un navigation controller con él
         let navVC = UINavigationController(rootViewController: nVC)
         
-        // Crear la window, asignarle el navigatio controller como root y mostrarla
+        
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = navVC
         window?.makeKeyAndVisible()
     }
-    
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        // Si ya se descargó el JSON remoto en el pasado, cargamos la lista de libros a partir de los datos almacenados localmente
+        // If the remote JSON was already downloaded in previous executions, load the book list from the local cache
         if JSON_ALREADY_DOWNLOADED {
             
-            print("\nMostrando librería...\n")
+            print("\nShowning library...\n")
             showLibrary()
         }
             
-        // Si nunca se había descargado el JSON remoto, se intenta descargar y construir los objetos del modelo
-        
+        // If the remote JSON was never downloaded, do it now. Then, store the data and show the book list
         else {
             
             generateData(fromRemoteUrl: remoteJsonUrlString, inContext: model.context, activityIndicator: nil) { (success: Bool) in
@@ -100,11 +96,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if success {
                             //UserDefaults.standard.set(true, forKey: self.jsonAlreadyDownloadedKey)
                     
-                            print("\nDatos remotos descargados con éxito, mostrando librería...\n")
+                            print("\nData successfully downloaded, showing library...\n")
                             self.showLibrary()
                 }
                 else {
-                            fatalError("\n** ERROR ** No fue posible descargar los datos remotos.\n")
+                            fatalError("\n** ERROR: failed to download remote JSON, or it is not a valid JSON document **")
                 }
             }
             
@@ -112,7 +108,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
-    
     
     
     func applicationWillResignActive(_ application: UIApplication) {
@@ -134,20 +129,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     
-    // Antes de que la aplicación termine, volcamos al SQLite todos los cambios no guardados
+    // Before the app finishes, dump all unsaved changes to SQLite
     func applicationWillTerminate(_ application: UIApplication) {
         
-        //print("\nGuardando datos antes de finalizar la app...\n")
+        //print("\nSaving data before finishing application...\n")
         //model.save()
     }
-
-    
-    
-    
-    //MARK: Funciones auxiliares
-    
-    
-
 }
 
 

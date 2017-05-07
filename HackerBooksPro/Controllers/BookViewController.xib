@@ -76,10 +76,6 @@
                         </barButtonItem>
                     </items>
                 </toolbar>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" style="gray" id="v1i-Eh-qdj">
-                    <frame key="frameInset" minX="150" minY="248" width="20" height="20"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
-                </activityIndicatorView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="&lt;Tag list&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xRW-6f-Ux2">
                     <frame key="frameInset" minX="16" minY="189" width="94.74%" height="51"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -92,6 +88,10 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <edgeInsets key="layoutMargins" top="15" left="15" bottom="15" right="15"/>
                 </imageView>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" style="gray" id="v1i-Eh-qdj">
+                    <frame key="frameInset" minX="50.00%" minY="248" width="20" height="20"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <point key="canvasLocation" x="-1562" y="-1061"/>

@@ -9,31 +9,35 @@
 import UIKit
 import CoreData
 
+
+// This class represents a Table View Controller that manages data linked to CoreData
+
 class CoreDataTableViewController: UITableViewController {
     
     // MARK:  - Properties
     
-    // fetchedResultsController es un controlador (pero no un ViewController) que hará de intermediario entre
-    // una descripción de búsqueda (fetchRequest) y un ViewController (que puede ser una tabla, un CollectionView, etc)
+    // fetchedResultsController is a controller that acts as intermediary between
+    // a fetch request and the ViewController that will show the data
     var fetchedResultsController : NSFetchedResultsController<NSFetchRequestResult>? {
         
-        // Con didSet establecemos un observador para los cambios de una propiedad computada del objeto (en este caso el fetchedResultsController)
-        // Entonces asignamos el delegado (él mismo), ejecutamos la búsqueda y recargamos la tabla
-        // ( Ojo: el didSet no se ejecuta cuando se crea el objeto en el inicializador, a menos que se use un defer (ver más abajo) )
+        // With didSet we set the behavior when the propererty value changes
+        // NOTE: this has no effect when the property is set from an initializer method, unless a defer is used (see below)
         didSet{
             
+            // Set the delegate to itself, execute the query and reload the view
             fetchedResultsController?.delegate = self
             executeSearch()
             tableView.reloadData()
         }
     }
     
-    // Inicializador de la clase, recibe un NSFetchedResultsController y un estilo de tabla
+    // Class initializer: receives an NSFetchedResultsController and a style for the table
     init(fetchedResultsController fc : NSFetchedResultsController<NSFetchRequestResult>, style : UITableViewStyle = .plain) {
         
-        // El bloque "defer" se ejecutará siempre al final del método. En este caso, justo después de inicializar el objeto)
-        // (como ya está terminada la inicialización, al asignar el valor a fetchedResultsController, inmediatamente se ejecutará el didSet)
+        // Defer blocks are always executed at the end of the method (in this case, just after initializing the object)
         defer {
+            
+            // Here the object is already initialized, so this line will make the didSet to be executed
             fetchedResultsController = fc
         }
         
@@ -47,16 +51,14 @@ class CoreDataTableViewController: UITableViewController {
         
         super.init(coder: aDecoder)
     }
-    
 }
 
 
-// MARK:  - Subclass responsability
-// (métodos que deben implementar las subclases de esta clase)
+// MARK:  - Subclass responsibility (methods to be implemented by subclasses of this class)
 
 extension CoreDataTableViewController{
     
-    // Método para crear cada celda de la tabla
+    // Method to create the table cells
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         fatalError("This method MUST be implemented by a subclass of CoreDataTableViewController")
@@ -64,11 +66,11 @@ extension CoreDataTableViewController{
 }
 
 
-// MARK:  - Table Data Source
-// (métodos para la construcción de la tabla)
+// MARK:  - Table Data Source (methods to build the table)
+
 extension CoreDataTableViewController{
     
-    // Número de secciones de la tabla
+    // Number of sections in the table
     override func numberOfSections(in tableView: UITableView) -> Int {
         
         if let fc = fetchedResultsController {
@@ -84,7 +86,7 @@ extension CoreDataTableViewController{
         }
     }
     
-    // Número de filas en una sección
+    // Number of rows in a given section
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if let fc = fetchedResultsController{
@@ -95,7 +97,7 @@ extension CoreDataTableViewController{
         }
     }
     
-    // Título de una sección concreta
+    // Title for a given section
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
         if let fc = fetchedResultsController{
@@ -107,7 +109,7 @@ extension CoreDataTableViewController{
         }
     }
     
-    // Secciones a mostrar para una sección índice que pueden mostrarse a la derecha (ej. A, B, ... en una lista de contactos)
+    // Sections to show on the right for a given section index (like A, B, ... in a contact list)
     override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
         
         if let fc = fetchedResultsController{
@@ -118,7 +120,7 @@ extension CoreDataTableViewController{
         }
     }
     
-    // Título de las secciones índice
+    // Titles for the section indexes
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         
         if let fc = fetchedResultsController{
@@ -128,16 +130,16 @@ extension CoreDataTableViewController{
             return nil
         }
     }
-    
-    
 }
 
-// MARK:  - Fetches
-// (gestión de las búsquedas)
+
+// MARK:  - Fetches managing
+
 extension CoreDataTableViewController{
     
-    // Función de ejecución de la búsqueda asociada al controlador
-    // (para usar cuando cambie algún objeto del contexto)
+    // Executes the query associated to the controller
+    // (will be called when some object in the context changes)
+    
     func executeSearch(){
         
         if let fc = fetchedResultsController {
@@ -153,17 +155,18 @@ extension CoreDataTableViewController{
 }
 
 
-// MARK:  - Delegate
-// (protocolo del delegado del NSFetchedResultsController, para refrescar la vista ante cambios en el modelo)
-// (con esto no es necesario hacer un reloadData(), ya que se actualiza directamente lo que ha cambiado)
+// MARK:  - NSFetchedResultsControllerDelegate protocol
+// This protocol is needed to refresh the view when changes in the model happen
+// (no need to call reloadData(), since the changes are automatically updated)
+
 extension CoreDataTableViewController: NSFetchedResultsControllerDelegate{
     
-    
+    // What to do right before the data managed by the controller changes
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
     }
     
-    // Qué hacer cuando se actualiza o modifica una sección
+    // What to do when a section is created or deleted
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
                     didChange sectionInfo: NSFetchedResultsSectionInfo,
                     atSectionIndex sectionIndex: Int,
@@ -173,20 +176,18 @@ extension CoreDataTableViewController: NSFetchedResultsControllerDelegate{
         
         switch (type) {
             
-        case .insert:
-            tableView.insertSections(set, with: .fade)
+            case .insert:
+                tableView.insertSections(set, with: .fade)
             
-        case .delete:
-            tableView.deleteSections(set, with: .fade)
+            case .delete:
+                tableView.deleteSections(set, with: .fade)
             
-        default:
-            // irrelevant in our case
-            
-            break
+            default:
+                break
         }
     }
     
-    // Qué hacer cuando se actualiza o modifica un objeto
+    // What to do when an object of the table is created, deleted, modified or moved
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
                     didChange anObject: Any,
                     at indexPath: IndexPath?,
@@ -195,21 +196,22 @@ extension CoreDataTableViewController: NSFetchedResultsControllerDelegate{
         
         switch(type) {
             
-        case .insert:
-            tableView.insertRows(at: [newIndexPath!], with: .fade)
+            case .insert:
+                tableView.insertRows(at: [newIndexPath!], with: .fade)
             
-        case .delete:
-            tableView.deleteRows(at: [indexPath!], with: .fade)
+            case .delete:
+                tableView.deleteRows(at: [indexPath!], with: .fade)
             
-        case .update:
-            tableView.reloadRows(at: [indexPath!], with: .fade)
+            case .update:
+                tableView.reloadRows(at: [indexPath!], with: .fade)
             
-        case .move:
-            tableView.deleteRows(at: [indexPath!], with: .fade)
-            tableView.insertRows(at: [newIndexPath!], with: .fade)
+            case .move:
+                tableView.deleteRows(at: [indexPath!], with: .fade)
+                tableView.insertRows(at: [newIndexPath!], with: .fade)
         }
     }
     
+    // What to do right after the data managed by the controller changes
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
     }

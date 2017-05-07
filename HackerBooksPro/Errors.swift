@@ -3,16 +3,16 @@
 //  HackerBooksPro
 //
 //  Created by Carlos Delgado on 28/09/16.
-//  Copyright © 2016 KeepCoding. All rights reserved.
 //
 
 import Foundation
 
 
-// MARK: JSON Errors
+// This file contains the definition of errors that can be thrown during the execution
+// (all derived from Error, so that they can be returned with throw)
 
-// Definiciones de los diferentes errores
-// (derivados de Error para poder devolverlos con un throw)
+
+//MARK: errors that can be thrown while processing a JSON file
 
 enum JsonError: Error {
     
@@ -26,11 +26,15 @@ enum JsonError: Error {
 }
 
 
+//MARK: errors that can be thrown while accessing the file system
+
 enum FilesystemError: Error {
     
     case unableToCreateCacheFolders
 }
 
+
+//MARK: errors that can be thrown while accessing the SQLite data
 
 enum CoreDataError: Error {
     

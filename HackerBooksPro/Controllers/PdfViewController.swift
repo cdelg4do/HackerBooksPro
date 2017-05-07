@@ -8,20 +8,20 @@
 
 import UIKit
 
-import CoreData     // para usar NSManagedObjectContext
-import CoreGraphics // para usar CGFloat
+import CoreData     // to use NSManagedObjectContext
+import CoreGraphics // to use CGFloat
 
+
+// This class is the view controller to show the PDF of a book
 
 class PdfViewController: UIViewController {
-    
-    //MARK: Propiedades
     
     var currentBook: Book
     var context: NSManagedObjectContext
     
-    // Número de página actual
-    // Si cambia, se comprueba si hay notas asociadas a la nueva página (en segundo plano)
-    // y se (des)habilitan los botones de la pantalla que correspondan
+    // This variable registers the current page shown
+    // When its value changes, a check is done in background to see if the new page has notes associated to it
+    // (depending on the result, the 'add note' / 'edit note' buttons will be enabled or disabled)
     var lastPageShown : Int {
         
         didSet {
@@ -29,21 +29,20 @@ class PdfViewController: UIViewController {
                 
                 if (self.lastPageShown > 0) {
                     
-                    // Si la nueva página ya tiene alguna nota,
-                    // se habilita el botón de ver la nota creada y se deshabilita el de crear nota
                     if self.hasNotes(pageNumber: self.lastPageShown) {
                         
                         DispatchQueue.main.async {
-                            print("\nLa página (\(self.lastPageShown)) SÍ tiene alguna nota asociada\n")
+                            print("\nThe page (\(self.lastPageShown)) has a note associated to it\n")
+                            
                             self.viewNoteButton.isEnabled = true
                             self.newNoteButton.isEnabled = false
                         }
                     }
-                        // Si no, se deshabilita el botón de ver la nota creada y se habilita el de crear nota
+                    
                     else {
-                        
                         DispatchQueue.main.async {
-                            print("\nLa página (\(self.lastPageShown)) NO tiene notas asociadas\n")
+                            print("\nThe page (\(self.lastPageShown)) does NOT have notes associated to it\n")
+                            
                             self.viewNoteButton.isEnabled = false
                             self.newNoteButton.isEnabled = true
                         }
@@ -56,14 +55,14 @@ class PdfViewController: UIViewController {
     }
     
     
-    //MARK: Referencia a los objetos de la interfaz
+    //MARK: Reference to UI elements
     @IBOutlet weak var pdfWebView: UIWebView!
     @IBOutlet weak var activity: UIActivityIndicatorView!
     @IBOutlet weak var viewNoteButton: UIBarButtonItem!
     @IBOutlet weak var newNoteButton: UIBarButtonItem!
     
     
-    //MARK: Inicializadores
+    //MARK: Initializers
     
     init(currentBook: Book, context: NSManagedObjectContext) {
         
@@ -79,7 +78,7 @@ class PdfViewController: UIViewController {
     }
     
     
-    //MARK: Eventos del ciclo de vida de la vista
+    //MARK: view lifecycle events
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,6 +90,9 @@ class PdfViewController: UIViewController {
         newNoteButton.isEnabled = false
         
         syncViewFromModel()
+        
+        // Right after the view loads, a check to see if the page has changed starts
+        // (it will be executed every second)
         checkForPageChange(delayInSeconds: 1)
     }
     
@@ -102,8 +104,8 @@ class PdfViewController: UIViewController {
         
         super.viewDidAppear(animated)
         
-        // Nada más mostrar la vista, actualizar el valor de lastPageShown
-        // (para forzar la ejecución del observador de esta propiedad)
+        // Right after the view appears, update the value of lastPageShown
+        // (to force the execution of the didSet observer)
         lastPageShown = currentPageNumber()
     }
     
@@ -113,14 +115,12 @@ class PdfViewController: UIViewController {
     }
     
     
+    //MARK: Actions from the UI elements
     
-    //MARK: Acciones al pulsar los botones de la vista
-    
-    // Función que muestra la nota asociada a la página actual
+    // 'View note' button
     @IBAction func showNote(_ sender: AnyObject) {
         
-        // Buscar la nota asociada en segundo plano,
-        // crear un NoteViewController con esa nota, y mostrarlo (en primer plano)
+        // Get the note associated to the current page (in background), then show it on a new screen
         DispatchQueue.global(qos: .userInitiated).async {
             
             let existingNote = self.findNote(forPage: self.lastPageShown)
@@ -128,35 +128,43 @@ class PdfViewController: UIViewController {
             if existingNote != nil {
                 DispatchQueue.main.async {
                     let noteVC = NoteViewController(currentNote: existingNote!, bookTitle: self.currentBook.title!, isNewNote: false, context: self.context)
+                    
+                    self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Save",
+                                                                            style: UIBarButtonItemStyle.plain,
+                                                                            target: nil,
+                                                                            action: nil)
+                    
                     self.navigationController?.pushViewController(noteVC, animated: true)
                 }
             }
         }
-        
-        
-        
     }
     
     
-    // Función que crea una nueva nota asociada a la página actual
+    // 'Add note' button
     @IBAction func createNote(_ sender: AnyObject) {
         
-        // Crear una nueva nota en blanco, asociada al libro y página actuales
+        // Create a new blank note, associated to the current page and book
         let currentPage = currentPageNumber()
         let newNote = Note(book: currentBook, page: Int32(currentPage), minContext: context)
-        newNote.text = "Write something here..."
+        newNote.text = ""
         
-        // Crear un NoteViewController asociado a esa nota, y mostrarlo
+        // Create a NoteViewController associated to the new note, and show it
         let noteVC = NoteViewController(currentNote: newNote, bookTitle: currentBook.title!, isNewNote: true, context: context)
+        
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Save",
+                                                           style: UIBarButtonItemStyle.plain,
+                                                           target: nil,
+                                                           action: nil)
+        
         navigationController?.pushViewController(noteVC, animated: true)
     }
     
     
+    //MARK: Auxiliary functions
     
-    //MARK: Funciones auxiliares
-    
-    // Función que cada cierto tiempo actualiza el contador de la página actual
-    // (solo si hubo cambios desde la vez anterior)
+    // This method checks the current page shown every certain seconds.
+    // If it has changed since the last time, stores the new page number in lastPageShown.
     func checkForPageChange(delayInSeconds delay: Int) {
         
         let currentPage = currentPageNumber()
@@ -165,17 +173,15 @@ class PdfViewController: UIViewController {
             lastPageShown = currentPage
         }
         
-        // Calcular la hora de la siguiente comprobación
+        // Calculate the time for the next check, and queue a new recursive call to be invoked at that time
         let delayInNanoSeconds = UInt64(delay) * NSEC_PER_SEC
         let time = DispatchTime.now() + Double(Int64(delayInNanoSeconds)) / Double(NSEC_PER_SEC)
-        
-        // Encolar una nueva llamada a checkForPageChange() en la cola principal, se ejecutará a la hora calculada
         DispatchQueue.main.asyncAfter(deadline: time, execute: { self.checkForPageChange(delayInSeconds: delay) } )
     }
     
     
-    // Función que indica si una página ya tiene una nota asociada
-    // (debería invocarse en segundo plano)
+    // Determines if the given page has an associated note
+    // (should be invoked in background)
     func hasNotes(pageNumber: Int) -> Bool {
         
         let note = findNote(forPage: pageNumber)
@@ -185,8 +191,8 @@ class PdfViewController: UIViewController {
     }
     
     
-    // Función que busca la nota asociada al libro y página actuales
-    // (debería invocarse en segundo plano)
+    // Searches the associated note for the given page, if any.
+    // (should be invoked in background)
     func findNote(forPage pageNumber: Int) -> Note? {
         
         let noteReq = NSFetchRequest<Note>(entityName: Note.entityName)
@@ -195,79 +201,76 @@ class PdfViewController: UIViewController {
         noteReq.predicate = NSCompoundPredicate( andPredicateWithSubpredicates: [filterByBook, filterByPage] )
         let res = try! context.fetch(noteReq)
         
-        if res.count == 0   {   return nil}
-        else                {   return res.first!    }
+        if res.count == 0   {   return nil          }
+        else                {   return res.first!   }
     }
     
     
-    
-    // Función que calcula el número de página actual del documento
+    // Gets the current page number of the PDF
     func currentPageNumber() -> Int {
         
-        // Referencia al documento PDF del modelo (CGPDFDocument de Core Graphics)
+        // Reference to the PDF document (CGPDFDocument of Core Graphics)
         guard let pdfData = currentBook.pdf?.pdfData else { return 0 }
         guard let provider = CGDataProvider(data: pdfData as CFData) else { return 0 }
         guard let doc = CGPDFDocument(provider) else { return 0 }
         
-        // Número total de páginas en el documento
+        // Get the total page number in the document
         let pdfPageCount = CGFloat(doc.numberOfPages)
         
-        // "Altura" total del contenido (a partir del ScrollView del UIWebView que muestra el pdf)
+        // Total "height" of the contents (from the ScrollView in the UIWebView that shows the document)
         let totalContentHeight = pdfWebView.scrollView.contentSize.height;
         
-        // "Altura" del contenido de una sola página del documento
+        // Calculate how much is the "height" of one page
         let pdfPageHeight = totalContentHeight / pdfPageCount
         
-        // "Altura" del marco en el que se muestra el pdf, a la mitad
+        // Calculate how much is the "height" of the frame showing the document, then divide it by two
         let halfScreenHeight = pdfWebView.frame.size.height / 2;
         
-        // Desplazamiento actual del documento desde el inicio
+        // Calculate the current "offset" from the document beginning
         let verticalContentOffset = pdfWebView.scrollView.contentOffset.y;
         
-        // Página actual
+        // Last, calculate the current page number
         let pageNumber = Int ( ceil((verticalContentOffset + halfScreenHeight) / pdfPageHeight ) )
         
         return pageNumber
     }
     
     
-    
-    // Función para actualizar la vista con los datos del libro
+    // Updates the view from the model data
     func syncViewFromModel() {
         
         title = currentBook.title
-        
         syncPdfData()
     }
     
     
-    // Función que obtiene los datos del PDF para mostrar en pantalla
-    
+    // Gets the PDF data (from SQLite or from the Internet) and shows the document on screen
     func syncPdfData() {
         
-        // Si ya hay datos del PDF descargados, lo mostramos en pantalla
+        // If the PDF was previously downloaded, just show it on screen
         let pdfData = currentBook.pdf?.pdfData
         
         if pdfData != nil {
             
-            print("\nMostrando PDF local...\n")
+            print("\nShowing locally stored PDF...\n")
             
             pdfWebView.load( pdfData as! Data, mimeType: "application/pdf", textEncodingName: "utf-8", baseURL: URL(string: ".")! )
             
             lastPageShown = currentPageNumber()
         }
             
-        // Si aún no hay datos de la imagen, se intenta descargar la imagen remota en segundo plano,
-        // Si la descarga se realiza con éxito, se actualizan la vista y el modelo.
+        
+        // If the PDF was never downloaded, attempt to download it now (in background).
+        // Then update the view and the model.
         else {
             let urlString = (currentBook.pdf?.url)!
             
-            print("\nDescargando pdf remoto...\n(\(urlString))\n")
+            print("\nDownloading remote PDF...\n(\(urlString))\n")
             
             Utils.asyncDownloadData(fromUrl: urlString, activityIndicator: activity) { (downloadedData: Data?) in
                 
                 if downloadedData != nil {
-                    print("\nPdf remoto descargada con éxito!\n")
+                    print("\nRemote PDF successfully downloaded!\n")
                     
                     self.pdfWebView.load( downloadedData!, mimeType: "application/pdf", textEncodingName: "utf-8", baseURL: URL(string: ".")! )
                     
@@ -276,15 +279,11 @@ class PdfViewController: UIViewController {
                     self.currentBook.pdf?.pdfData = downloadedData as NSData?
                 }
                 else {
-                    print("\nERROR: No ha sido posible cargar el pdf remoto\n")
+                    print("\nERROR: Unable to load the remote PDF\n")
                 }
             }
             
         }
     }
     
-    
-    
-    
 }
-

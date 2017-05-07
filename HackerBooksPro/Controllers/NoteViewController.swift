@@ -23,7 +23,7 @@ class NoteViewController: UIViewController {
     
     
     //MARK: Referencia a los objetos de la interfaz
-    @IBOutlet weak var pageLabel: UILabel!
+    //@IBOutlet weak var pageLabel: UILabel!
     @IBOutlet weak var createdLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var textView: UITextView!
@@ -65,7 +65,7 @@ class NoteViewController: UIViewController {
             let delayInNanoSeconds = UInt64(5) * NSEC_PER_SEC
             let time = DispatchTime.now() + Double(Int64(delayInNanoSeconds)) / Double(NSEC_PER_SEC)
             DispatchQueue.main.asyncAfter(deadline: time, execute: { self.syncLocationFromModel() } )
-            self.addressLabel.text = "  Getting current address..."
+            self.addressLabel.text = "Getting current address..."
             
             mapButton.isEnabled = false
         }
@@ -78,7 +78,8 @@ class NoteViewController: UIViewController {
         self.textView.layer.borderWidth = 1
         self.textView.layer.borderColor = UIColor.gray.cgColor
         
-        title = self.bookTitle
+        //title = self.bookTitle
+        //self.navigationController?.navigationBar.backItem?.title = "Back to PDF"
         syncViewFromModel()
     }
     
@@ -97,6 +98,12 @@ class NoteViewController: UIViewController {
         
         // Crear un PhotoViewController asociado a esa nota, y mostrarlo
         let photoVC = PhotoViewController(currentNote: currentNote, context: context)
+        
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Save",
+                                                           style: UIBarButtonItemStyle.plain,
+                                                           target: nil,
+                                                           action: nil)
+        
         navigationController?.pushViewController(photoVC, animated: true)
     }
     
@@ -105,6 +112,12 @@ class NoteViewController: UIViewController {
         
         // Crear un NoteMapViewController asociado a esa nota, y mostrarlo
         let mapVC = NoteMapViewController(currentNote: currentNote)
+        
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back",
+                                                           style: UIBarButtonItemStyle.plain,
+                                                           target: nil,
+                                                           action: nil)
+        
         navigationController?.pushViewController(mapVC, animated: true)
     }
     
@@ -125,9 +138,9 @@ class NoteViewController: UIViewController {
     // Función para actualizar la vista con los datos de la nota
     func syncViewFromModel() {
         
+        title = "Note at page \(currentNote.page)"
         self.textView.text = currentNote.text
-        self.pageLabel.text = "  Page: \(currentNote.page)"
-        self.createdLabel.text = "  Created: " + Utils.dateToString(currentNote.creationDate!)
+        self.createdLabel.text = "Created: " + Utils.dateToString(currentNote.creationDate!)
         
         if (!isNewNote) {
             syncLocationFromModel()
@@ -140,11 +153,11 @@ class NoteViewController: UIViewController {
         
         if currentNote.hasLocation  {
             
-            self.addressLabel.text = "  Address: " + (currentNote.location?.address!)!
+            self.addressLabel.text = "Address: " + (currentNote.location?.address!)!
             mapButton.isEnabled = true
         }
         else {
-            self.addressLabel.text = "  Address: Unknown"
+            self.addressLabel.text = "Address: Unknown"
             mapButton.isEnabled = false
         }
     }

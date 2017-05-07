@@ -7,26 +7,25 @@
 //
 
 import UIKit
+import CoreData     // to use NSManagedObjectContext
 
-import CoreData     // para usar NSManagedObjectContext
 
+// This class is the view controller to show the detail of a book
 
 class BookViewController: UIViewController {
-    
-    //MARK: Propiedades
     
     var currentBook: Book
     var context: NSManagedObjectContext
     
     
-    //MARK: Referencia a los objetos de la interfaz
+    //MARK: Reference to UI elements
     @IBOutlet weak var authorsLabel: UILabel!
     @IBOutlet weak var tagsLabel: UILabel!
     @IBOutlet weak var activity: UIActivityIndicatorView!
     @IBOutlet weak var bookCover: UIImageView!
     
     
-    //MARK: Inicializadores
+    //MARK: Initializers
     
     init(currentBook: Book, context: NSManagedObjectContext) {
         
@@ -41,7 +40,7 @@ class BookViewController: UIViewController {
     }
     
     
-    //MARK: Eventos del ciclo de vida de la vista
+    //MARK: view lifecycle events
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,83 +69,89 @@ class BookViewController: UIViewController {
     }
     
     
+    //MARK: Actions from the UI elements
     
-    //MARK: Acciones al pulsar los botones de la ventana
-    
-    // Botón de mostrar PDF del libro
+    // 'Show PDF' button
     @IBAction func showPdf(_ sender: AnyObject) {
         
-        // Crear un SimplePDFViewController con los datos del modelo
         let pdfVC = PdfViewController(currentBook: currentBook, context: context)
         
-        // Hacer un push sobre mi NavigatorController
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Detail",
+                                                           style: UIBarButtonItemStyle.plain,
+                                                           target: nil,
+                                                           action: nil)
+        
         navigationController?.pushViewController(pdfVC, animated: true)
     }
     
     
-    // Botón de añadir/quitar favorito
+    // 'Toggle favorite' button
     @IBAction func toggleFavorite(_ sender: AnyObject) {
         
-        // Buscar en los BookTag si hay alguna coincidencia del tag de favoritos con el presente libro
+        // Check if there is a BookTag match with this book and the favorites tag
         let bookTagReq = NSFetchRequest<BookTag>(entityName: BookTag.entityName)
         let filterByTag = NSPredicate(format: "tag.proxyForSorting == %@", "_favorites")
         let filterByBook = NSPredicate(format: "book == %@", currentBook)
         bookTagReq.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [filterByTag, filterByBook])
         let res = try! context.fetch(bookTagReq)
         
-        // Si no hay coincidencias, se añade el libro a favoritos.
+        // If no matches were found, add the book to favorites
         if res.count == 0 {
-            print("\nAñadiendo el libro a favoritos...\n")
+            print("\nAdding book to favorites...\n")
             
-            // Obtener una referencia al tag de favoritos
+            // Get the favorites tag
             let tagReq = NSFetchRequest<Tag>(entityName: Tag.entityName)
             tagReq.predicate = NSPredicate(format: "proxyForSorting == %@", "_favorites")
             let res1 = try! context.fetch(tagReq)
             let favoritesTag = res1.first!
             
-            // Crear un nuevo bookTag con el tag de favoritos y el libro actual
+            // Create a neew BookTag with this book and the favorites tag
             let _ = BookTag(book: currentBook, tag: favoritesTag, inContext: context)
             try! context.save()
         }
         
-        // Si hay alguna coincidencia (debería haber una como mucho), entonces la eliminamos
+        // If matches were found (should not be more than one), remove the book from favorites
         else {
-            print("\nEliminando el libro de favoritos...\n")
+            print("\nRemoving the book from favorites...\n")
             
             context.delete(res.first!)
             try! context.save()
         }
         
-        // Por último, actualizar la vista con la información actualizada y salvar
+        // Last, sync the view using the updated data
         syncViewFromModel(includingCover: false)
     }
     
     
-    // Botón de mostrar las notas del presente libro
+    // 'Show notes' button
     @IBAction func showNotes(_ sender: AnyObject) {
         
-        // FetchRequest para los datos que se mostrarán
-        // (las notas de este libro, cargadas de 50 en 50, ordenadas por página)
+        // Fetch request to search all notes of this book
+        // (loaded in groups of 50, sorted by page number)
         let fr = NSFetchRequest<Note>(entityName: Note.entityName)
         fr.predicate = NSPredicate(format: "book == %@", currentBook)
         fr.fetchBatchSize = 50
         fr.sortDescriptors = [ NSSortDescriptor(key: "page", ascending: true) ]
         
-        // Crear el fetchResultsController correspondiente
+        // Create the fetchResultsController for that fetch request
         let fc = NSFetchedResultsController(fetchRequest: fr, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
         
-        // Crear el controlador que mostrará las libretas y mostrarlo
+        // Create the controller to show the results, and show it
         let notesVC = NotesViewController(bookTitle: currentBook.title!, fetchedResultsController: fc as! NSFetchedResultsController<NSFetchRequestResult>)
+        
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Detail",
+                                                           style: UIBarButtonItemStyle.plain,
+                                                           target: nil,
+                                                           action: nil)
         
         navigationController?.pushViewController(notesVC, animated: true)
     }
     
     
+    //MARK: Auxiliary functions
     
-    //MARK: Funciones auxiliares
-    
-    // Función para actualizar la vista con los datos del libro
-    // (opcionalmente, se actualizará también la portada)
+    // Updates the view using the book data
+    // (optionally, the book cover will be updated too)
     func syncViewFromModel(includingCover syncCover: Bool) {
         
         title = currentBook.title
@@ -158,45 +163,38 @@ class BookViewController: UIViewController {
     }
     
     
-    // Función que actualiza la portada del libro en pantalla
-    
+    // Updates the book cover view
     func syncCoverImage() {
         
-        // Si ya hay datos de la imagen descargados, la mostramos en pantalla
         let imageData = currentBook.cover?.coverData
         
+        // If the database already has the cover image, show it on screen
         if imageData != nil {
-            
             bookCover.image = UIImage(data: imageData as! Data)
             bookCover.alpha = 1.0
         }
         
-        // Si aún no hay datos de la imagen, se intenta descargar la imagen remota en segundo plano,
-        // Si la descarga se realiza con éxito, se actualizan la vista y el modelo.
+        // If not, attempt to download the image (in the backgrond), then update the model and the view
         else {
             let urlString = (currentBook.cover?.url)!
             
-            print("\nDescargando imagen remota...\n(\(urlString))\n")
+            print("\nDownloading remote image...\n(\(urlString))\n")
             
             Utils.asyncDownloadImage(fromUrl: urlString, mustResize: true, activityIndicator: activity) { (image: UIImage?) in
                 
                 if image != nil {
-                    print("\nImagen remota descargada con éxito!\n")
+                    print("\nImage successfully downloaded!\n")
+                    
+                    self.currentBook.cover?.image = image
                     
                     self.bookCover.image = image
                     self.bookCover.alpha = 1.0
-                    
-                    self.currentBook.cover?.image = image
                 }
                 else {
-                    print("\nERROR: No ha sido posible cargar la imagen remota\n")
+                    print("\nERROR: Unable to download remote image\n")
                 }
             }
-            
         }
     }
-    
-    
-    
     
 }

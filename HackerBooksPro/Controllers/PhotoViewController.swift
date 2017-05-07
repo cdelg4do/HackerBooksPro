@@ -83,7 +83,7 @@ class PhotoViewController: UIViewController {
         }
         photoView.image = Utils.resizeImage(imageShowing, toSize: Utils.screenSize() )
         
-        title = "Note at page \(currentNote.page)"
+        title = "Image for note at page \(currentNote.page)"
     }
     
     // Guardar en el modelo la información de la vista

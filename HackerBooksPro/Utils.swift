@@ -3,42 +3,41 @@
 //  HackerBooksPro
 //
 //  Created by Carlos Delgado on 28/09/16.
-//  Copyright © 2016 KeepCoding. All rights reserved.
 //
 
 import Foundation
-
 import UIKit
 
 
+// This class contains auxiliary functions that can be invoked from any point of the app
+// (all of them are class functions)
 class Utils {
     
-    // Clausuras de finalización, funciones que reciben un UIImage? o un Data?
-    // y que se ejecutarán siempre en la cola principal
-    
+    // Alias for trailing closures, these functions will always be executed in the main queue.
+    // They receive an optional so that they can manage nil in case it comes from a failed operation.
     typealias imageClosure = (UIImage?) -> ()
     typealias dataClosure = (Data?) -> ()
     
     
-    // Función que realiza la descarga de una imágen remota en segundo plano
-    // Si la descarga se realiza con éxito, produce la UIImage resultante.
-    // Si no, produce nil.
+    // Downloads a remote image in background.
+    // If the operation succeeded, passes the corresponding UIImage to the closure. If not, passes nil.
     // 
-    // Parámetros:
+    // Params:
     // 
-    // - fromUrl: cadena con la url de la imagen remota
-    // - mustResize: indica si la imagen debe redimensionarse al tamaño de la pantalla (true) o quedar en su tamaño original (false)
-    // - activityIndicator: activa y desactiva el indicador de actividad antes y después de la operación asíncrona (si no se usa, dejar a nil)
-    // - completion: clausura de finalización que recibe un UIImage? resultante, que se ejecutará en la cola principal
+    // - fromUrl: string with the URL of the remote image
+    // - mustResize: true if the image should be resized to fit the screen size, or false if it must keep its original size
+    // - activityIndicator: if not nil, enables the passed UIActivityIndicatorView during the asynchronous operation
+    // - completion: trailing closure that receives an UIImage?, will run in the main queue
     
     class func asyncDownloadImage(fromUrl urlString: String, mustResize: Bool, activityIndicator: UIActivityIndicatorView?, completion: @escaping imageClosure) {
         
         activityIndicator?.isHidden = false
         activityIndicator?.startAnimating()
         
-        // Carga de datos y confección de la imagen (en segundo plano)
+        // Download image and build UImage (in background)
+        
         //DispatchQueue.global(qos: .userInitiated).async {
-        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + .seconds(1) ) {
+        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + .seconds(1) ) {     // Give 1 sec. for the activity indicator to show
             
             var finalImage: UIImage?
             
@@ -67,7 +66,7 @@ class Utils {
                 finalImage = nil
             }
             
-            // Pasar la imagen obtenida a la clausura de finalización (en la cola principal)
+            // Hide the activity indicator and pass the UIImage to the closure (in the main queue)
             DispatchQueue.main.async {
                 
                 activityIndicator?.stopAnimating()
@@ -80,22 +79,21 @@ class Utils {
     }
     
     
-    // Función que realiza la descarga de datos de una URL remota en segundo plano
-    // Si la descarga se realiza con éxito, produce el Data resultante.
-    // Si no, produce nil.
+    // Downloads the data of a remote url in background.
+    // If the operation succeeded, passes the corresponding Data to the closure. If not, passes nil.
     //
-    // Parámetros:
+    // Params:
     //
-    // - fromUrl: cadena con la url remota
-    // - activityIndicator: activa y desactiva el indicador de actividad antes y después de la operación asíncrona (si no se usa, dejar a nil)
-    // - completion: clausura de finalización que recibe un Data? resultante, que se ejecutará en la cola principal
+    // - fromUrl: string with the remote URL
+    // - activityIndicator: if not nil, enables the passed UIActivityIndicatorView during the asynchronous operation
+    // - completion: trailing closure that receives a Data?, will run in the main queue
     
     class func asyncDownloadData(fromUrl urlString: String, activityIndicator: UIActivityIndicatorView?, completion: @escaping dataClosure) {
         
         activityIndicator?.isHidden = false
         activityIndicator?.startAnimating()
         
-        // Carga de datos (en segundo plano)
+        // Download data and build the Data object (in background)
         DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + .seconds(1) ) {
             
             var remoteData: Data?
@@ -110,7 +108,7 @@ class Utils {
                 remoteData = nil
             }
             
-            // Pasar los datos obtenidos a la clausura de finalización (en la cola principal)
+            // Hide the activity indicator and pass the Data to the closure (in the main queue)
             DispatchQueue.main.async {
                 
                 activityIndicator?.stopAnimating()
@@ -123,9 +121,8 @@ class Utils {
     }
     
     
-    // Función que re-escala una imagen, para que entre dentro del CGSize indicado
-    // (la imagen resultante mantiene su proporción original)
-    // (ver https://iosdevcenters.blogspot.com/2015/12/how-to-resize-image-in-swift-in-ios.html)
+    // Re-scales a given UIImage to fit inside the the given CGSize (the image keeps its aspect ratio)
+    // (based on code from https://iosdevcenters.blogspot.com/2015/12/how-to-resize-image-in-swift-in-ios.html)
     class func resizeImage(_ image: UIImage, toSize targetSize: CGSize) -> UIImage {
         
         let size = image.size
@@ -154,13 +151,14 @@ class Utils {
     }
     
     
-    // Función que indica el tamaño de la pantalla del dispositivo
+    // Gets the device screen size
     class func screenSize() -> CGSize {
         
         return UIScreen.main.nativeBounds.size
     }
     
-    // Función que convierte un objeto NSDate a la correspondiente cadena de texto
+    
+    // Converts an NSData date to a String
     class func dateToString(_ date: NSDate) -> String {
         
         let formatter = DateFormatter()
@@ -168,6 +166,4 @@ class Utils {
         
         return formatter.string(from: date as Date)
     }
-    
 }
-

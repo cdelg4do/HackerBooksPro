@@ -77,7 +77,7 @@ class NoteMapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = "Note at page \(currentNote.page)"
+        title = "Location for note at page \(currentNote.page)"
     }
     
     

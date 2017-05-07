@@ -7,21 +7,19 @@
 //
 
 import UIKit
+import CoreData
 
-import CoreData     // para usar NSFetchRequest
 
+// This class is the CoreDataTableViewController that shows the existing books in the library
 
 class LibraryViewController: CoreDataTableViewController {
     
     
-    // Operaciones a realizar una vez que se carga la vista
+    // What to do after the view is loaded
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "HackerBooks Pro"   // Mostrar un título
-        
-        //let searchFr = NSFetchRequest<BookTag>(entityName: BookTag.entityName)
-        //let _ = NSFetchedResultsController(fetchRequest: searchFr, managedObjectContext: (self.fetchedResultsController?.managedObjectContext)!, sectionNameKeyPath: "tag.name", cacheName: nil)
+        title = "HackerBooks Pro"   // Set the title to show
     }
     
     
@@ -29,28 +27,24 @@ class LibraryViewController: CoreDataTableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
-    
-    
 }
 
 
-// Extensiones de la clase
+//MARK: Class extensions
 
 extension LibraryViewController {
     
-    // Implementación del método para crear las celdas de la tabla (CoreDataTableViewController no lo implementa)
+    // Method to create the table cells (not implemented in the base class)
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        // Identificador para la celda
+        // Cell identifier (all cells will be the same kind)
         let cellId = "BookCell"
         
-        // Obtener el libro que corresponde a la celda
+        // Get the book for this cell
         let bookTag = fetchedResultsController?.object(at: indexPath) as! BookTag
         let book = bookTag.book!
         
-        // Obtener/crear la celda correspondiente
+        // Reuse/create the cell
         var cell = tableView.dequeueReusableCell(withIdentifier: cellId)
         
         if cell == nil {
@@ -58,48 +52,30 @@ extension LibraryViewController {
             cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellId)
         }
         
-        // Configuración de la celda: el texto (el título del libro) y el subtexto (el/los autores)
-        // (el ?? indica que se debe usar el contenido del opcional nb.name, o "New Notebook" si aquél es nil)
-        cell?.textLabel?.text = book.title ?? "< Libro sin identificar >"
+        // Cell setup: show the book title and the book author(s)
+        // (the ?? operator lets us specify an alternate value, in case book.title is nil)
+        cell?.textLabel?.text = book.title ?? "< Book without title >"
         cell?.detailTextLabel?.text = book.authorsToString()
         
-        // Devolver la celda
         return cell!
     }
     
     
-    
-    // Utils:
-    
-    // Acción a realizar cuando se selecciona la fila de un libro
+    // What to do when a table row is selected
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        // Obtener el libro seleccionado
+        // Get the selected book
         let bookTag = fetchedResultsController?.object(at: indexPath) as! BookTag
         let book = bookTag.book!
         
-        // Crear el controlador para mostrar el libro seleccionado
+        // Create the controller to show the book detail and navigate to it
         let bookVC = BookViewController(currentBook: book, context: (fetchedResultsController?.managedObjectContext)! )
         
-        // Mostrar el controlador
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Library",
+                                                           style: UIBarButtonItemStyle.plain,
+                                                           target: nil,
+                                                           action: nil)
+        
         navigationController?.pushViewController(bookVC, animated: true)
     }
-    
 }
-
-
-//MARK: Búsqueda por texto
-
-extension LibraryViewController {
-    
-    
-    
-    
-    
-}
-
-
-
-
-
-
