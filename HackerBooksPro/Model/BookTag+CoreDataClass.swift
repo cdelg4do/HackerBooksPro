@@ -8,24 +8,24 @@
 import Foundation
 import CoreData
 
+
+// This class connects a Book with a Tag in the system
+
 @objc(BookTag)
 public class BookTag: NSManagedObject {
     
-    // Nombre que corresponde a la entidad de esta clase en el modelo
+    // Model entity name for this class
     static let entityName = "BookTag"
     
     
-    // Inicializador de la clase
-    // (de conveniencia para que CoreData pueda utilizar los super.init() desde fuera)
+    // Initializer (convenience so that CoreData can invoke super.init() from outside)
     convenience init(book: Book, tag: Tag, inContext context: NSManagedObjectContext) {
         
-        // Obtenemos la entidad correspondiente al nombre anterior
+        // Get the appropiate model entity, then create a new entity of that kind in the given context
         let ent = NSEntityDescription.entity(forEntityName: BookTag.entityName, in: context)!
-        
-        // Crear una nueva entidad del tipo obtenido, en el contexto
         self.init(entity: ent, insertInto: context)
         
-        // Asignar valores iniciales a las propiedades
+        // Assign initial values to the properties
         self.book = book
         self.tag = tag
     }

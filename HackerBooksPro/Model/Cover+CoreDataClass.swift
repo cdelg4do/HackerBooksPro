@@ -7,24 +7,22 @@
 
 import Foundation
 import CoreData
+import UIKit   // to use UIImage
 
-import UIKit   // para usar UIImage
 
+// This class represents a cover image in the system
 
 @objc(Cover)
 public class Cover: NSManagedObject {
     
-    // Nombre que corresponde a la entidad de esta clase en el modelo
+    // Model entity name for this class
     static let entityName = "Cover"
     
-    // Propiedad computada para manejar la imagen como UIImage
-    // (abstrayéndonos de la representación binaria interna del modelo, que es de tipo NSData)
-    // De paso, eliminamos la dualidad entre Cocoa (NSData) y Swift (Data)
-    
+    // Calculated variable to manage the cover image as UIImage, instead NSData which is the model internal type.
+    // Also, this prevents from errors between Cocoa (NSData) and Swift (Data).
     var image: UIImage? {
         
-        // El getter comprueba que los datos binarios de la imagen no estén vacíos (en cuyo caso devuelve nil).
-        // Si no están vacíos, crea un nuevo UIImage a partir de los datos de photoData y lo devuelve.
+        // Getter -> if image data are empty, return nil. If not, return a new UIImage from the data
         get {
             guard let data = coverData else {
                 return nil
@@ -33,8 +31,7 @@ public class Cover: NSManagedObject {
             return UIImage(data: data as Data)!
         }
         
-        // El setter comprueba que el valor asignado (newValue) no sea nil (en cuyo caso lo almacena sin más).
-        // Si newValue no es nil, lo convierte en la representación binaria de un JPEG (Data) y la almacena como NSData.
+        // Setter -> if the new value is not nil, convert it to a JPG binary representation (Data) and store it as NSData.
         set {
             guard let img = newValue else {
                 self.coverData = nil
@@ -45,19 +42,14 @@ public class Cover: NSManagedObject {
         }
     }
     
-    
-    // Inicializador de la clase, inicialmente sin UIImage (para los libros cuya portada aún no fue descargada)
-    // (de conveniencia para que CoreData pueda utilizar los super.init() desde fuera)
+    // Initializer (convenience so that CoreData can invoke super.init() from outside)
     convenience init(url: String, inContext context: NSManagedObjectContext) {
         
-        // Obtenemos del contexto la entity description correspondiente al nombre anterior
+        // Get the appropiate model entity, then create a new entity of that kind in the given context
         let ent = NSEntityDescription.entity(forEntityName: Cover.entityName, in: context)!
-        
-        // Crear una nueva entidad del tipo obtenido, en el contexto
         self.init(entity: ent, insertInto: context)
         
-        // Asignar la url indicada
+        // Assign initial values to the properties (only the url)
         self.url = url
     }
-
 }

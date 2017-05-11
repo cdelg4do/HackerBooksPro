@@ -3,29 +3,28 @@
 //  HackerBooksPro
 //
 //  Created by Carlos Delgado on 02/10/16.
-//  Copyright © 2016 KeepCoding. All rights reserved.
 //
 
 import UIKit
+import CoreData     // to use NSManagedObjectContext
 
-import CoreData     // para usar NSManagedObjectContext
 
+// This class is the view controller to show the note image
+// (and the controls to remove/pick a new one)
 
 class PhotoViewController: UIViewController {
     
-    //MARK: Propiedades de la clase
-    
     var currentNote: Note
     var context: NSManagedObjectContext
+    var saveShownImage = false  // flag that indicates if the selected image should be saved to the model
+                                // (if the selected image is the default one, then it will be false)
     
-    var saveShownImage = false   // si se muestra la imagen por defecto, no debe guardarse en el modelo
-    
-    // Referencia a los elementos de la interfaz
+    // Reference to UI elements
     @IBOutlet weak var photoView: UIImageView!
     @IBOutlet weak var deleteButton: UIBarButtonItem!
     
     
-    //MARK: Inicializadores de la clase
+    //MARK: Initializators
     init(currentNote: Note, context: NSManagedObjectContext) {
         
         self.currentNote = currentNote
@@ -34,28 +33,29 @@ class PhotoViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
-    // Inicializador necesario por la herencia de Objetctive-C en Swift
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     
-    //MARK: Ciclo de vida del controlador
+    //MARK: controller lifecycle evetnts
     
+    // What to do after the view is loaded
     override func viewDidLoad() {
         super.viewDidLoad()
         
     }
     
-    // Acciones a realizar justo antes de mostrar el controlador
-    // (cargar los datos del modelo en la vista)
+    // What to do just before show the controller
+    // (update the view from the model data)
     override func viewWillAppear(_ animated: Bool) {
         
         super.viewWillAppear(animated)
         syncViewFromModel()
     }
     
-    // Acciones a realizar justo antes de dejar de mostrar el controlador
+    // What to do just before the controller is not shown any longer
+    // (save the data in the view to the model)
     override func viewWillDisappear(_ animated: Bool) {
         
         super.viewWillDisappear(animated)
@@ -63,7 +63,9 @@ class PhotoViewController: UIViewController {
     }
     
     
-    // Mostrar en la vista los datos del modelo
+    // MARK: auxiliary functions
+    
+    // Update the view from the model data
     func syncViewFromModel() {
         
         let imageShowing: UIImage
@@ -86,7 +88,7 @@ class PhotoViewController: UIViewController {
         title = "Image for note at page \(currentNote.page)"
     }
     
-    // Guardar en el modelo la información de la vista
+    // Save the data in the view to the model
     func syncModelFromView() {
         
         if saveShownImage {
@@ -95,99 +97,88 @@ class PhotoViewController: UIViewController {
     }
     
     
-    // Acción a realizar cuando se pulse el botón de imagen
+    //MARK: Actions from the UI elements
+    
+    // 'Pick from gallery' button -> open the device gallery to select a picture
     @IBAction func chooseImage(_ sender: AnyObject) {
         
-        // Configuración del selector de imágenes
+        // Setup image picker
         let picker = UIImagePickerController()
         
-        /*
-         // Acceso a la cámara si está disponible, o bien a la galería.
-         // (deben incluirse en el info.plist valores para "Privacy - Camera Usage Description"
-         // y para "Privacy - Photo Library Usage Description", respectivamente)
-         
-         if UIImagePickerController.isCameraDeviceAvailable(.rear) {
-         picker.sourceType = .camera
-         }
-         else {
-         picker.sourceType = .photoLibrary
-         }
-         */
-        
-        // Acceso directamente a la galería
+        // Direct access to the gallery
+        // (requires to add in info.plist a value for "Privacy - Photo Library Usage Description")
         picker.sourceType = .photoLibrary
         
-        // Especificar su delegado para las acciones a realizar con la imagen escogida (este mismo controlador)
-        picker.delegate = self
+        /*
+         // Uncomment this block if you want to try the camera first.
+         // If the camera is not available, then go to the gallery
+         // (requires to add in info.plist a value for "Privacy - Camera Usage Description")
+         
+         if UIImagePickerController.isCameraDeviceAvailable(.rear) {
+            picker.sourceType = .camera
+         }
+         else {
+            picker.sourceType = .photoLibrary
+         }
+        */
         
-        // Mostrarlo de forma modal
+        // Set this controller as the picker delegate (should implement the 
+        // UIImagePickerControllerDelegate and UINavigationControllerDelegate protocols) and show it in modal way
+        picker.delegate = self
         self.present(picker, animated: true) {
-            // Acciones a realizar nada más mostrarse el picker
+            // Here goes the actions to perform right after showing the picker, if any
         }
     }
     
-    
-    // Acción a realizar cuando se pulse el botón de borrar foto
+    // 'Remove Image' button -> remove the current image from the note
     @IBAction func deleteImage(_ sender: AnyObject) {
         
-        // Guardamos los bounds originales de la imagen
+        // Save the original bounds of the current image on screen
         let initialBounds = self.photoView.bounds
         
-        // Hacer desaparecer la imagen con una animación
-        // (a lo largo de 0,9 segundos reducirá la transparencia hasta 0,
-        // y centrado en el medio de la imagen aplicará una rotación de PI cuartos en radianes)
+        // Make the current image disappear using an animation that takes 0.9 seconds
+        // (the alpha will fade to transparent, while the image rotates Pi radians centered in the middle)
         UIView.animate(withDuration: 0.9,
                        animations: {
                         self.photoView.alpha = 0
                         self.photoView.bounds = CGRect(x: 0, y: 0, width: 0, height: 0)
                         self.photoView.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI_4))
-            })
-        {
+                       })
+        { (finished: Bool) in
             
-            (finished: Bool) in
-            
-            // Una vez desaparecida, restaurar los parámetros originales de la UIImageView
+            // Once the animation is finished restore the original image bounds, rotation and alpha
             self.photoView.bounds = initialBounds
             self.photoView.transform = CGAffineTransform(rotationAngle: CGFloat(0))
             self.photoView.alpha = 1
             
-            // Eliminamos la imagen del modelo y sincronizamos la vista
-            // (lo hacemos dentro de este bloque de finalización para esperar a que acabe la animación)
+            // Remove the image from the model, then sync the view
+            // (will show the default image, that should never be saved to the model)
             self.currentNote.photo?.image = nil
             self.syncViewFromModel()
-            
-            // Se mostrará la imagen por defecto, que en ningún caso debe guardarse en el modelo
             self.saveShownImage = false
         }
     }
-    
-    
 }
 
 
-
-// Implementación de los protocolos de delegado de UIImagePickerController y de UINavigationController
+//MARK: class extensions (implementation of the UIImagePickerController delegate protocols)
 
 extension PhotoViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    // Acción a realizar cuando se escoge una imagen
-    
+    // What to do when an image is picked
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
+        // Get the selected image and re-escale it to fit into the screen (to prevent memory overload)
         let pickedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        
-        // Redimensionar la imagen escogida antes de mostrarla, para evitar problemas de memoria
         let screenSize = UIScreen.main.nativeBounds.size
         let resizedImage = Utils.resizeImage(pickedImage, toSize: screenSize )
         
-        // Actualizar el modelo
-        // (la vista se actualizará cuando se muestre el PhotoViewController, una vez retirado el picker)
+        // Update the model with the resized image (the view will update automatically after the picker is gone)
+        // Set the save flag to true (to save in the model the image shown when we quit from this controller)
         currentNote.photo?.image = resizedImage
-        
-        // Si se sigue mostrando esta imagen al salir de este controlador, se salvará en el modelo
         saveShownImage = true
         
-        // Eliminar el UIImagePickerController
+        // Last, dismiss the image picker
         self.dismiss(animated: true) {}
     }
 }

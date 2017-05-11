@@ -8,24 +8,23 @@
 import Foundation
 import CoreData
 
+
+// This class represents a book author in the system
+
 @objc(Author)
 public class Author: NSManagedObject {
     
-    // Nombre que corresponde a la entidad de esta clase en el modelo
+    // Model entity name for this class
     static let entityName = "Author"
     
-    
-    // Inicializador de la clase
-    // (de conveniencia para que CoreData pueda utilizar los super.init() desde fuera)
+    // Initializer (convenience so that CoreData can invoke super.init() from outside)
     convenience init(name: String, inContext context: NSManagedObjectContext) {
         
-        // Obtenemos la entidad correspondiente al nombre anterior
+        // Get the appropiate model entity, then create a new entity of that kind in the given context
         let ent = NSEntityDescription.entity(forEntityName: Author.entityName, in: context)!
-        
-        // Crear una nueva entidad del tipo obtenido, en el contexto
         self.init(entity: ent, insertInto: context)
         
-        // Asignar valores iniciales a las propiedades
+        // Assign initial values to the properties
         self.name = name
     }
 

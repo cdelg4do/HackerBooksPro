@@ -3,35 +3,32 @@
 //  HackerBooks
 //
 //  Created by Carlos Delgado on 10/07/16.
-//  Copyright © 2016 CDA. All rights reserved.
 //
 
 import Foundation
 import UIKit
+import CoreData     // to use NSManagedObjectContext
 
-import CoreData     // para usar NSManagedObjectContext
+
+// This file contains all necessary functions to perform JSON processing operations
 
 
-// Tipos auxiliares para el tratamiento de JSON
-
+// Aliases for custom types used when processing JSON data
 typealias JsonObject        = AnyObject
 typealias JsonDictionary    = [String : JsonObject]
 typealias JsonList          = [JsonDictionary]
 
-
-// Clausura de finalización, función que recibe un Bool
-// y que se ejecutará siempre en la cola principal
-
+// Alias for a closure that receives a Bool
 typealias boolClosure = (Bool) -> ()
 
 
-
-// Función que realiza la descarga del JSON remoto y la posterior carga de datos en el modelo
-// (todo ello en segundo plano)
-
-func generateData(fromRemoteUrl url: String, inContext context: NSManagedObjectContext, activityIndicator: UIActivityIndicatorView?, completion: @escaping boolClosure) -> () {
+// Function that downloads a remote JSON file and then loads the data to the model (all in background)
+func generateData(fromRemoteUrl url: String,
+                  inContext context: NSManagedObjectContext,
+                  activityIndicator: UIActivityIndicatorView?,
+                  completion: @escaping boolClosure) -> () {
     
-    print("\nGenerando datos iniciales desde JSON remoto...\n")
+    print("\nGenerating initial data from a remote JSON...\n")
     activityIndicator?.isHidden = false
     activityIndicator?.startAnimating()
     
@@ -39,19 +36,15 @@ func generateData(fromRemoteUrl url: String, inContext context: NSManagedObjectC
         
         let jsonData: JsonList?
         
-        // Descarga de datos remotos (en segundo plano)
+        // Download the remote data in background
         do {
-            
             jsonData = downloadJson(fromUrl: url)
             if jsonData == nil {  throw JsonError.unableToGetDataFromRemoteJson   }
         }
         
-        // Si hubo fallos ejecutamos la clausura de finalización en la cola principal
-        // pasando false como resultado de la operación
+        // If errors happened, call the completion closure with "false" in the main queue
         catch {
-            
             DispatchQueue.main.async {
-                
                 activityIndicator?.stopAnimating()
                 activityIndicator?.isHidden = true
             
@@ -60,13 +53,11 @@ func generateData(fromRemoteUrl url: String, inContext context: NSManagedObjectC
             }
         }
         
-        // Procesamiento de los datos descargados (en segundo plano)
+        // Processing of the downloaded data (in background)
         decodeBookList(fromList: jsonData!, inContext: context)
         
-        // Una vez procesados y cargados los datos en el modelo ejecutamos la clausura de finalización
-        // en la cola principal, pasando true como resultado de la operación
+        // Once the data is loaded into the model, call the completion closure with "true" in the main queue
         DispatchQueue.main.async {
-            
             activityIndicator?.stopAnimating()
             activityIndicator?.isHidden = true
             
@@ -74,21 +65,15 @@ func generateData(fromRemoteUrl url: String, inContext context: NSManagedObjectC
             return
         }
     }
-    
 }
 
 
-
-// Función que trata de descargar un fichero remoto y parsear su contenido,
-// devolviendo el objeto JsonList correspondiente (si no lo consigue, devuelve nil)
-
+// Attempts to download a remote file, then parses and returns its contents (or nil, in case of failure)
 func downloadJson(fromUrl urlString: String) -> JsonList? {
     
-    // Intentar descargar el contenido del fichero remoto en un objeto Data
-    print("\nDescargando JSON remoto desde \(urlString)...")
+    print("\nDownloading remote JSON from \(urlString)...")
     
     let fileData: Data?
-    
     guard let url = URL(string: urlString) else { return nil }
     
     do {
@@ -96,28 +81,27 @@ func downloadJson(fromUrl urlString: String) -> JsonList? {
     }
     catch { return nil }
     
-    if fileData == nil { return nil }
-    
-    
-    // Intentar parsear los datos recibidos como JsonList
-    print("\nParseando datos descargados...")
-    
-    guard let maybeList = try? JSONSerialization.jsonObject(with: fileData!, options: JSONSerialization.ReadingOptions.mutableContainers) as? JsonList, let jsonList = maybeList else {
-        
+    if fileData == nil {
         return nil
     }
+    
+    
+    print("\nParsing downloaded data...")
+    
+    guard let maybeList = try? JSONSerialization.jsonObject(with: fileData!, options: JSONSerialization.ReadingOptions.mutableContainers) as? JsonList, let jsonList = maybeList
+        else {
+            return nil
+        }
     
     return jsonList
 }
 
 
-
-// Función que trata de decodificar los datos de los libros a partir de una lista de objetos JsonDictionary
-// (si se produce algún error al procesar alguno de los JsonDictionary, se muestra el error en el log y se pasa al siguiente elemento)
-
+// Attempts to build the model objects from the parsed JSON data
+// (in case some element fails -i.e. is not valid-, a warning is logged but the process continues with the next element)
 func decodeBookList(fromList jsonList: JsonList, inContext context: NSManagedObjectContext) -> () {
     
-    print("\nConstruyendo objetos del modelo a partir de los datos descargados...\n")
+    print("\nBuilding model objects from the parsed data...\n")
     
     for jsonElement in jsonList {
         
@@ -125,60 +109,52 @@ func decodeBookList(fromList jsonList: JsonList, inContext context: NSManagedObj
             try decodeBook(fromElement: jsonElement, inContext: context)
         }
         catch {
-            print("\n** Error al procesar elemento JSON: \(jsonElement) **\n")
+            print("\n** Error processing a JSON element: \(jsonElement) **\n")
         }
     }
     
-    // Por último creamos el tag de favoritos, que inicialmente no estará asociado a ningún libro
-    // (la propiedad proxyForSorting del tag comienza por un _ para que aparezca primero en la lista)
+    // Last, create the "My favorites" tag
+    // (make its proxy for sorting start with "_", so it will appear first in the library)
     let _ = Tag(name: "My Favorites", proxyForSorting: "_favorites", inContext: context)
 }
 
 
-
-// Función que trata de decodificar los datos de un libro a partir de un objeto JsonDictionary
-
+// Attempts to create a new Book object from a JSON element
 func decodeBook(fromElement json: JsonDictionary, inContext context: NSManagedObjectContext) throws -> () {
     
-    // Primero, se intenta obtener del JsonDictionary todos los datos relevantes
-    //print("\nDecodificando elemento: \(json)...\n")
+    // First, extract all the necessary fields:
     
-    // Título del libro
+    // Book title
     guard let bookTitle = json["title"] as? String else { throw JsonError.wrongJSONFormat }
     
-    // URL de la portada (comprobando que la cadena represente a una URL)
-    guard let imageUrlString = json["image_url"] as? String else {  throw JsonError.wrongJSONFormat }
-    guard NSURL(string: imageUrlString) != nil else { throw JsonError.wrongURLFormatForJSONResource }
+    // Cover image URL (make sure its a valid url)
+    guard let imageUrlString = json["image_url"] as? String else { throw JsonError.wrongJSONFormat }
+    guard NSURL(string: imageUrlString) != nil              else { throw JsonError.wrongURLFormatForJSONResource }
     
-    // URL del PDF (comprobando que la cadena represente a una URL)
-    guard let pdfUrlString = json["pdf_url"] as? String else {  throw JsonError.wrongJSONFormat }
-    guard NSURL(string: pdfUrlString) != nil else { throw JsonError.wrongURLFormatForJSONResource }
+    // Pdf URL (make sure its a valid url)
+    guard let pdfUrlString = json["pdf_url"] as? String     else { throw JsonError.wrongJSONFormat }
+    guard NSURL(string: pdfUrlString) != nil                else { throw JsonError.wrongURLFormatForJSONResource }
     
-    // Autores del libro
-    guard let authorsString = json["authors"] as? String else { throw JsonError.wrongJSONFormat }
+    // Book authors
+    guard let authorsString = json["authors"] as? String    else { throw JsonError.wrongJSONFormat }
     let bookAuthors = authorsString.components(separatedBy: ", ")
     
-    // Tags del libro
-    guard let tagsString = json["tags"] as? String else { throw JsonError.wrongJSONFormat }
+    // Book tags
+    guard let tagsString = json["tags"] as? String          else { throw JsonError.wrongJSONFormat }
     let bookTags = tagsString.components(separatedBy: ", ")
     
     
-    // Si hemos podido extraer todos los elementos del JsonDictionary sin fallo,
-    // ya podemos crear y/o relacionar los managed objects
+    // If no errors were thrown, now create and connect all the managed objects:
     
-    // Portada y Pdf del libro (inicialmente, solo contendrán las URLs)
+    // Cover and Pdf (initially, both contain only the URLs)
     let bookCover = Cover(url: imageUrlString, inContext: context)
     let bookPdf = Pdf(url: pdfUrlString, inContext: context)
     
-    // Creación del libro, asociando al mismo la portada y el pdf anteriores
+    // Create the new Book and associate it to the cover and Pdf objects
     let newBook = Book(title: bookTitle, cover: bookCover, pdf: bookPdf, inContext: context)
     
-    
-    
-    // Para cada autor de la lista de autores, comprobar si ya existe dicho autor
-    // Si existe obtenemos una referencia al mismo, y si no lo creamos
-    // Por último, asociamos el autor con el libro
-    
+    // For each book author, get a reference to it and associate it to the book
+    // (if that author does not exist yet, create it first)
     let authorsReq = NSFetchRequest<Author>(entityName: Author.entityName)
     
     for authorName in bookAuthors {
@@ -198,10 +174,8 @@ func decodeBook(fromElement json: JsonDictionary, inContext context: NSManagedOb
     }
     
     
-    // Para cada tag de la lista de tags, comprobar si ya existe dicho tag
-    // Si existe obtenemos una referencia al mismo, y si no lo creamos
-    // Por último, creamos una nueva entidad bookTag que asocie al tag con el libro
-    
+    // For each book tag, get a reference to it and associate it to the book by creating a new BookTag object
+    // (if that tag does not exist yet, create it first)
     let tagsReq = NSFetchRequest<Tag>(entityName: Tag.entityName)
     tagsReq.fetchBatchSize = 50
     tagsReq.sortDescriptors = [ NSSortDescriptor(key: "name", ascending: false) ]
@@ -221,7 +195,5 @@ func decodeBook(fromElement json: JsonDictionary, inContext context: NSManagedOb
         
         let _ = BookTag(book: newBook, tag: thisTag, inContext: context)
     }
-    
 }
-
 

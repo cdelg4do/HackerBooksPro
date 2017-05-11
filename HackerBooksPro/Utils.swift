@@ -11,6 +11,7 @@ import UIKit
 
 // This class contains auxiliary functions that can be invoked from any point of the app
 // (all of them are class functions)
+
 class Utils {
     
     // Alias for trailing closures, these functions will always be executed in the main queue.

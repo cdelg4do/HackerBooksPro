@@ -3,31 +3,29 @@
 //  HackerBooksPro
 //
 //  Created by Carlos Delgado on 28/09/16.
-//  Copyright © 2016 KeepCoding. All rights reserved.
 //
 
 import Foundation
 import CoreData
 
+
+// This class represents a Pdf document in the system
+
 @objc(Pdf)
 public class Pdf: NSManagedObject {
     
-    // Nombre que corresponde a la entidad de esta clase en el modelo
+    // Model entity name for this class
     static let entityName = "Pdf"
     
     
-    // Inicializador de la clase, inicialmente sin UIImage (para los libros cuyo PDF aún no fue descargado)
-    // (de conveniencia para que CoreData pueda utilizar los super.init() desde fuera)
+    // Initializer (convenience so that CoreData can invoke super.init() from outside)
     convenience init(url: String, inContext context: NSManagedObjectContext) {
         
-        // Obtenemos del contexto la entity description correspondiente al nombre anterior
+        // Get the appropiate model entity, then create a new entity of that kind in the given context
         let ent = NSEntityDescription.entity(forEntityName: Pdf.entityName, in: context)!
-        
-        // Crear una nueva entidad del tipo obtenido, en el contexto
         self.init(entity: ent, insertInto: context)
         
-        // Asignar la url indicada
+        // Assign initial values to the properties (only the url)
         self.url = url
     }
-
 }

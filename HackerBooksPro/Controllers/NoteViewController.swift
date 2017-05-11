@@ -3,17 +3,15 @@
 //  HackerBooksPro
 //
 //  Created by Carlos Delgado on 01/10/16.
-//  Copyright © 2016 KeepCoding. All rights reserved.
 //
 
 import UIKit
+import CoreData     // to use NSManagedObjectContext
 
-import CoreData     // para usar NSManagedObjectContext
 
+// This class is the view controller to show and edit the contents of a note
 
 class NoteViewController: UIViewController {
-    
-    //MARK: Propiedades
     
     var isNewNote: Bool
     var currentNote: Note
@@ -21,17 +19,14 @@ class NoteViewController: UIViewController {
     var context: NSManagedObjectContext
     
     
-    
-    //MARK: Referencia a los objetos de la interfaz
-    //@IBOutlet weak var pageLabel: UILabel!
+    //MARK: Reference to UI elements
     @IBOutlet weak var createdLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var mapButton: UIBarButtonItem!
     
     
-    
-    //MARK: Inicializadores
+    //MARK: Initializers
     
     init(currentNote: Note, bookTitle: String, isNewNote: Bool, context: NSManagedObjectContext) {
         
@@ -49,19 +44,15 @@ class NoteViewController: UIViewController {
     }
     
     
-    
-    //MARK: Eventos del ciclo de vida de la vista
+    //MARK: view lifecycle events
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // If we are creating a new note, get the address name from the device gps (in background)
+        // (allow a 5 secs. delay for the reverse geolocation to work)
+        
         if isNewNote {
-            
-            // Usar la siguiente línea para que automáticamente pregunte seleccionar todo el texto
-            //textView.selectAll(self)
-            
-            // Actualizar la ubicación en pantalla tras 5 segundos
-            // (porque inmediatamente después de crearse la nota aún no ha dado tiempo a hacer la geolocalización inversa)
             let delayInNanoSeconds = UInt64(5) * NSEC_PER_SEC
             let time = DispatchTime.now() + Double(Int64(delayInNanoSeconds)) / Double(NSEC_PER_SEC)
             DispatchQueue.main.asyncAfter(deadline: time, execute: { self.syncLocationFromModel() } )
@@ -71,15 +62,12 @@ class NoteViewController: UIViewController {
         }
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         self.textView.layer.borderWidth = 1
         self.textView.layer.borderColor = UIColor.gray.cgColor
         
-        //title = self.bookTitle
-        //self.navigationController?.navigationBar.backItem?.title = "Back to PDF"
         syncViewFromModel()
     }
     
@@ -90,13 +78,11 @@ class NoteViewController: UIViewController {
     }
     
     
+    //MARK: Actions from the UI elements
     
-    //MARK: Acciones al pulsar los botones de la vista
-    
-    // Acción al pulsar el botón de imagen
+    // 'Image' button
     @IBAction func showPicture(_ sender: AnyObject) {
         
-        // Crear un PhotoViewController asociado a esa nota, y mostrarlo
         let photoVC = PhotoViewController(currentNote: currentNote, context: context)
         
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Save",
@@ -107,10 +93,9 @@ class NoteViewController: UIViewController {
         navigationController?.pushViewController(photoVC, animated: true)
     }
     
-    // Acción al pulsar el botón de mapa
+    // 'Map' button
     @IBAction func showMap(_ sender: AnyObject) {
         
-        // Crear un NoteMapViewController asociado a esa nota, y mostrarlo
         let mapVC = NoteMapViewController(currentNote: currentNote)
         
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back",
@@ -121,10 +106,10 @@ class NoteViewController: UIViewController {
         navigationController?.pushViewController(mapVC, animated: true)
     }
     
-    // Acción al pulsar el botón de borrar
+    // 'Discard' button
     @IBAction func deleteNote(_ sender: AnyObject) {
         
-        print("\nEliminando la nota actual...\n")
+        print("\nDeleting current note...\n")
         
         context.delete(currentNote)
         try! context.save()
@@ -133,9 +118,9 @@ class NoteViewController: UIViewController {
     }
     
     
-    //MARK: Funciones auxiliares
+    //MARK: Auxiliary functions
     
-    // Función para actualizar la vista con los datos de la nota
+    // Update the view with data from the model
     func syncViewFromModel() {
         
         title = "Note at page \(currentNote.page)"
@@ -147,8 +132,7 @@ class NoteViewController: UIViewController {
         }
     }
     
-    
-    // Función para actualizar solo la ubicación
+    // Update the text with the address (should be called in background)
     func syncLocationFromModel() {
         
         if currentNote.hasLocation  {
@@ -162,9 +146,8 @@ class NoteViewController: UIViewController {
         }
     }
     
-    
-    // Función para actualizar el modelo con los datos de la vista
-    // (solo actualizamos el texto y la fecha de última modificación)
+    // Update the model with the data from the view
+    // (only the modification date and the note text)
     func syncModelFromView() {
         
         currentNote.text = self.textView.text

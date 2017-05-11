@@ -3,7 +3,6 @@
 //  HackerBooksPro
 //
 //  Created by Carlos Delgado on 29/09/16.
-//  Copyright © 2016 KeepCoding. All rights reserved.
 //
 
 import UIKit

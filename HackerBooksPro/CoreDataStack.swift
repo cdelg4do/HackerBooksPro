@@ -9,31 +9,29 @@
 import CoreData
 
 
+// This class defines a customized CoreData stack to work with
+
 struct CoreDataStack {
     
-    // Propiedades (con fileprivate en vez de private, son accesibles fuera e este bloque, p.ej en una extensión)
+    // Use fileprivate on the properties to make them accessible outside this block (i.e. in an extension)
+    fileprivate let model : NSManagedObjectModel    // the model described in the xcdatamodel
+    fileprivate let modelURL : URL                  // url for the xcdatamodel model scheme on the filesystem
+    fileprivate let dbURL : URL                     // url for the database on the filesystem
     
-    fileprivate let modelURL : URL                  // url del esquema xcdatamodel del modelo en el filesystem
-    fileprivate let model : NSManagedObjectModel    // el modelo descrito en el xcdatamodel
+    // Contexts (object containers, each one is associated to a different queue to perform the core data operations)
+    fileprivate let persistingContext : NSManagedObjectContext  // context to persist data on disk only (in background)
+    fileprivate let backgroundContext : NSManagedObjectContext  // context to perform non-disk operations in background
+    let context : NSManagedObjectContext                        // context to perform non-disk operations in the main queue (update views, etc)
     
-    fileprivate let dbURL : URL                     // Url de la BBDD en el filesystem
-    
-    // Contextos (contenedores de los objetos, cada uno tiene asociada una cola propia para ejecutar las operaciones de Core Data)
-    fileprivate let persistingContext : NSManagedObjectContext  // contexto de persistencia, solo para guardar a disco (en segundo plano)
-    fileprivate let backgroundContext : NSManagedObjectContext  // contexto operaciones en 2o plano
-    let context : NSManagedObjectContext                        // contexto operaciones en cola principal (actualizar vistas, etc)
-    
-    fileprivate let coordinator : NSPersistentStoreCoordinator  // intermediario entre los contextos y los stores físicos
+    fileprivate let coordinator : NSPersistentStoreCoordinator  // an intermediate between the contexts and the physical storage
     
     
-    
-    // Inicializador: carga el modelo de nombre indicado e inicializa todas las estructuras necesarias para trabajar con él
-    // (si alguna operación falla, devolverá nil)
-    
+    // Initializer: loads the model corresponding to the given name and initializes all necessary structures to work with it
+    // (in case any operation fails, will return nil)
     init?(modelName: String) {
         
-        // Obtener la url del esquema (se asume que está en el main bundle de la app)
-        // e incicializar el modelo con los contenidos de dicho fichero
+        // Get the shema url (assumming it is int the app main bundle),
+        // then initialize the model with that file contents
         guard let modelURL = Bundle.main.url(forResource: modelName, withExtension: "momd") else {
             print("\nERROR: Unable to find \(modelName) in the main bundle\n")
             return nil
@@ -49,21 +47,21 @@ struct CoreDataStack {
         self.model = model
         
         
-        // Creamos un Store Coordinator, asociado a nuestro modelo
+        // Create an store coordinator associated to the model
         coordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
         
-        // Crear los 3 contextos que usaremos (uno en la cola principal y los otros dos en colas propias en 2o plano)
+        // Create the 3 contexts needed (one in the main queue, two in separate background queues)
         context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         backgroundContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         persistingContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         
-        // Jerarquía (de padres a hijos): StoreCoordinator > persistingContext > context > backgroundContext
+        // Set the hierarchy (from parents to children): StoreCoordinator > persistingContext > context > backgroundContext
         backgroundContext.parent = context
         context.parent = persistingContext
         persistingContext.persistentStoreCoordinator = coordinator
         
         
-        // Por último, asociar el Store Coordinator con un store de tipo SQLite almacenado en la carpera Documents
+        // Last, associate the Store Coordinator with a SQLite store in the Documents folder
         guard let docUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
             print("\nERROR: Unable to reach the Documents folder\n")
             return nil
@@ -77,30 +75,28 @@ struct CoreDataStack {
         catch {
             print("\nERROR: Unable to add store at \(dbURL)\n")
         }
-        
     }
     
     
-    // Función auxiliar que asocia a nuestro StoreCoordinator con un store del tipo y la ubicación indicados
-    // (si no existía ya, se crea físicamente el store)
+    // Auxiliary function to associate the StoreCoordinator with a store of the given type, at the given location
+    // (if the store does not exist yet, it is created now)
     func addStoreToCoordinator(_ storeType: String, storeURL: URL) throws {
         
-        // Opciones para migración de versiones (por si ya existe en el dispositivo un store de otra versión anterior del modelo):
-        // Migración de manera automática, haciendo que sea Core Data infiera él solo cómo hacerlo.
+        // In case a previous version of the store already exists on the device, set the migration options
+        // (automatic migration, lets CoreData figure it out)
         let migrationOptions = [NSMigratePersistentStoresAutomaticallyOption: true,
                                 NSInferMappingModelAutomaticallyOption: true ]
         
         try coordinator.addPersistentStore(ofType: storeType, configurationName: nil, at: storeURL, options: migrationOptions)
     }
-    
 }
 
 
-// Vaciado del store
+//MARK: class extension --> data removal
+
 extension CoreDataStack  {
     
-    // Función auxiliar para eliminar todos los objetos almacenados, para tests, etc.
-    // (deja un store con todas las tablas vacías)
+    // Auxiliary function to remove all stored objects (for testing, etc), leaves a store with all tables emptied
     func dropAllData() throws{
         
         try coordinator.destroyPersistentStore(at: dbURL, ofType:NSSQLiteStoreType , options: nil)
@@ -110,24 +106,23 @@ extension CoreDataStack  {
 }
 
 
-// MARK:  - Batch processing in the background
+//MARK: class extension --> background batch processing
+
 extension CoreDataStack {
     
-    // Tipo de función "Batch" que realiza operaciones de Core Data en un contexto determinado
+    // Alias for a function that performs some CoreData operation on a given context
     typealias Batch = (_ workerContext: NSManagedObjectContext) -> ()
     
-    
-    // Función para realizar operaciones en segundo plano (utilizando la función de tipo Bath indicada)
-    // (@escaping indica al compilador que la función Batch puede que se ejecute después de que haya finalizado performBackgroundBatchOperation() )
+    // Auxiliary function to perform CoreData operations in background
+    // (use of @escaping is required to indicate the compiler that Batch() can execute after this block is finished)
     func performBackgroundBatchOperation(_ batch: @escaping Batch){
         
-        // Perform() ejecuta un bloque en la cola asociada al contexto (este caso, en segundo plano)
+        // perform() executes a block in the queue associated to the context
         backgroundContext.perform() {
             
-            // Ejecutamos la operación indicada, usando el contexto de segundo plano
             batch(self.backgroundContext)
             
-            // Tras ejecutar la operación, se guardan los cambios para que sean visibles en el contexto padre
+            // Once the operation finishes, save changes in order to make them visible to the parent context
             do {
                 try self.backgroundContext.save()
             }
@@ -136,35 +131,33 @@ extension CoreDataStack {
             }
         }
     }
-    
 }
 
 
-// MARK:  - Save
+//MARK: class extension --> save data to disk
+
 extension CoreDataStack {
     
-    // Función para guardar los cambios en disco
-    // (primero consolida los cambios del contexto principal, y después los guarda en disco en segundo plano)
+    // This method stores the changes on disk
+    // (first consolidates changes on the main context, then saves them to disk in background)
     func save() {
         
-        // NOTA:
+        // NOTE:
         //
-        // El método save() de NSManagedObjectContext intenta plasmar los cambios no guardados de un contexto
-        // en el store padre (que puede ser otro contexto o un store coordinator):
-        //
-        // - Si el padre es otro contexto, símplemente los cambios se hacen visibles en el contexto padre (en memoria)
-        // - Si es un Store Coordinator, se consolidan los cambios en disco (SQLite, etc).
+        // NSManagedObjectContext.save() attempts to consolidate the unsaved changes of a context in the parent
+        // (another context, or a StoreCoordinator):
+        // 
+        // - If the parent is another context, changes are just made visible in the parent (on memory)
+        // - If the parent is a StoreCoordinator, changes are consolidated on disk (SQLite, etc)
         
-        
-        // PerformAndWait() ejecuta un bloque de manera secuencial en la cola asociada al contexto
-        // (se queda bloqueado hasta que termine cada paso)
+        // performAndWait() executes a block on the context queue, sequentially
         context.performAndWait() {
             
-            // Solo se efectúa el guardado si hay cambios que guardar en el contexto principal
+            // The operation will happen only if there are unsaved changes in the main context
             if self.context.hasChanges {
                 
-                // Guarda los cambios del contexto principal, haciéndolos visibles en el contexto de persistencia
-                // (aunque se hace en la cola principal esto no tiene mucho impacto, ya que no se accede al disco)
+                // Saves the main context changes, making them visible in the persistence context
+                // (this is not made in background, but it does not affect performance since it all happens in memory)
                 do {
                     try self.context.save()
                 }
@@ -172,8 +165,7 @@ extension CoreDataStack {
                     fatalError("\nERROR: Unable to save main context: \(error)")
                 }
                 
-                // Una vez actualizado el contexto principal indicamos al contexto de persistencia que,
-                // en su cola particular (2o plano), guarde los cambios en disco
+                // Now, tell the persistence context to save the unsaved changes to disk (this will happen in background)
                 self.persistingContext.perform() {
                     
                     do {
@@ -185,28 +177,22 @@ extension CoreDataStack {
                 }
             }
         }
-        
     }
     
-    
-    // Función que realiza el salvado de objetos cada cierto tiempo
+    // This function starts the automatic save every certain seconds
     func autoSave(_ delayInSeconds : Int) {
         
         if delayInSeconds > 0 {
             
-            // Salvar
             print("Autosaving...")
             save()
             
-            // Calcular la hora del siguiente autosalvado
+            // Queue a recursive call in the main queue, to be executed after the given seconds
             let delayInNanoSeconds = UInt64(delayInSeconds) * NSEC_PER_SEC
             let time = DispatchTime.now() + Double(Int64(delayInNanoSeconds)) / Double(NSEC_PER_SEC)
             
-            // Encolar una nueva llamada a autoSave() en la cola principal, para que se ejecute en la hora calculada
             DispatchQueue.main.asyncAfter(deadline: time, execute: { self.autoSave(delayInSeconds) } )
         }
-        
     }
-    
 }
 

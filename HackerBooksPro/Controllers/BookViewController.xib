@@ -57,7 +57,7 @@
                     <frame key="frameInset" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <items>
-                        <barButtonItem title="Read" id="mW2-rl-yPo">
+                        <barButtonItem title="Read PDF" id="mW2-rl-yPo">
                             <connections>
                                 <action selector="showPdf:" destination="-1" id="Bzp-yC-DaJ"/>
                             </connections>
@@ -69,7 +69,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="gvv-ff-yQ1"/>
-                        <barButtonItem title="Notes" id="Xay-f7-cPi">
+                        <barButtonItem title="View Notes" id="Xay-f7-cPi">
                             <connections>
                                 <action selector="showNotes:" destination="-1" id="BPQ-fy-IWH"/>
                             </connections>

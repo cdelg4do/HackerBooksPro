@@ -7,24 +7,22 @@
 
 import Foundation
 import CoreData
+import UIKit        // to use UIImage
 
-import UIKit   // para usar UIImage
 
+// This class represents a note image in the system
 
 @objc(Photo)
 public class Photo: NSManagedObject {
     
-    // Nombre que corresponde a la entidad de esta clase en el modelo
+    // Model entity name for this class
     static let entityName = "Photo"
     
-    // Propiedad computada para manejar la imagen como UIImage
-    // (abstrayéndonos de la representación binaria interna del modelo, que es de tipo NSData)
-    // De paso, eliminamos la dualidad entre Cocoa (NSData) y Swift (Data)
-    
+    // Calculated variable to manage the cover image as UIImage, instead NSData which is the model internal type.
+    // Also, this prevents from errors between Cocoa (NSData) and Swift (Data).
     var image: UIImage? {
         
-        // El getter comprueba que los datos binarios de la imagen no estén vacíos (en cuyo caso devuelve nil).
-        // Si no están vacíos, crea un nuevo UIImage a partir de los datos de photoData y lo devuelve.
+        // Getter -> if image data are empty, return nil. If not, return a new UIImage from the data
         get {
             guard let data = photoData else {
                 return nil
@@ -33,8 +31,7 @@ public class Photo: NSManagedObject {
             return UIImage(data: data as Data)!
         }
         
-        // El setter comprueba que el valor asignado (newValue) no sea nil (en cuyo caso lo almacena sin más).
-        // Si newValue no es nil, lo convierte en la representación binaria de un JPEG (Data) y la almacena como NSData.
+        // Setter -> if the new value is not nil, convert it to a JPG binary representation (Data) and store it as NSData.
         set {
             guard let img = newValue else {
                 self.photoData = nil
@@ -46,36 +43,27 @@ public class Photo: NSManagedObject {
     }
     
     
-    // Inicializador de la clase, con un UIImage
-    // (de conveniencia para que CoreData pueda utilizar los super.init() desde fuera)
+    // Initializer with an UIImage (convenience so that CoreData can invoke super.init() from outside)
     convenience init(note: Note, image: UIImage, inContext context: NSManagedObjectContext) {
         
-        // Obtenemos del contexto la entity description correspondiente al nombre anterior
+        // Get the appropiate model entity, then create a new entity of that kind in the given context
         let ent = NSEntityDescription.entity(forEntityName: Photo.entityName, in: context)!
-        
-        // Crear una nueva entidad del tipo obtenido, en el contexto
         self.init(entity: ent, insertInto: context)
         
-        // Añadir la imagen a la nota indicada
+        // Associate the image with the given note and save the given UIImage (internally will be stored as NSData)
         self.note = note
-        
-        // Guardar el UIImage recibido (internamente se almacenará como NSData)
         self.image = image
     }
     
     
-    // Inicializador de la clase, sin UIImage (para las notas que no tienen imagen)
-    // (de conveniencia para que CoreData pueda utilizar los super.init() desde fuera)
+    // Initializer without an UIImage (convenience so that CoreData can invoke super.init() from outside)
     convenience init(note: Note, inContext context: NSManagedObjectContext) {
         
-        // Obtenemos del contexto la entity description correspondiente al nombre anterior
+        // Get the appropiate model entity, then create a new entity of that kind in the given context
         let ent = NSEntityDescription.entity(forEntityName: Photo.entityName, in: context)!
-        
-        // Crear una nueva entidad del tipo obtenido, en el contexto
         self.init(entity: ent, insertInto: context)
         
-        // Añadir la imagen a la nota indicada
+        // Associate the image with the given note
         self.note = note
     }
-
 }

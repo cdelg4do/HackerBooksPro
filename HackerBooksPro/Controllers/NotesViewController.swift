@@ -3,37 +3,34 @@
 //  HackerBooksPro
 //
 //  Created by Carlos Delgado on 30/09/16.
-//  Copyright © 2016 KeepCoding. All rights reserved.
 //
 
 import UIKit
+import CoreData     // to use NSFetchRequest
 
-import CoreData     // para usar NSFetchRequest
 
+// This class is the view controller to show a list with all notes in a book
 
 class NotesViewController: CoreDataCollectionViewController {
     
-    //MARK: Constantes
-    let cellId = "NoteCell"     // Identificador para las celdas del CollectionView
-    let cellWidth = 150         // Anchura de la celda a mostrar (en puntos)
-    let cellHeight = 150        // Altura de la celda a mostrar (en puntos)
-    let cellMargin = 8          // Márgen interior de la celda (en puntos)
+    let cellId = "NoteCellId"   // Id for the CollectionView cells
+    let cellWidth = 150         // cell width (in points)
+    let cellHeight = 150        // cell height (in points)
+    let cellMargin = 8          // cell inner margin (in points)
     
-    //MARK: Otras propiedades
-    let bookTitle: String       // Título del libro cuyas notas se muestran
+    let bookTitle: String
     
+    // Computed variables to get the dimensions for the image to show in the cells
     var imageWidth: Int {
-        
         get {   return cellWidth - 2 * (cellMargin)   }
     }
     
     var imageHeight: Int {
-        
         get {   return (cellHeight / 2) as Int - cellMargin   }
     }
     
     
-    //MARK: Inicializadores designados
+    //MARK: Initializers
     init(bookTitle: String, fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>) {
         
         self.bookTitle = bookTitle
@@ -50,14 +47,15 @@ class NotesViewController: CoreDataCollectionViewController {
     }
     
     
-    //MARK: Ciclo de vida del controlador
+    //MARK: controller lifecycle events
     
-    // Operaciones a realizar una vez que se carga la vista
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = self.bookTitle
         
+        // Tell the collection view to create cells of the given type using the "NoteCell" xib file
+        // and set the collection view background color
         collectionView?.register(UINib(nibName: "NoteCell", bundle: nil), forCellWithReuseIdentifier: cellId)
         self.collectionView?.backgroundColor = UIColor.white
     }
@@ -65,28 +63,26 @@ class NotesViewController: CoreDataCollectionViewController {
 }
 
 
-// Extensiones de la clase
+// Class extensions
 
 extension NotesViewController {
     
-    // Implementación del método para crear las celdas de la tabla
-    // (obligatorio ya que CoreDataCollectionViewController no lo implementa)
+    // Method to create the table cells (not implemented in the base class)
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        // Obtener la nota que corresponde a la celda
+        // Get the note for this cell
         let note = fetchedResultsController?.object(at: indexPath) as! Note
         
-        // Obtener/crear la celda correspondiente
-        // (devuelve un UICollectionViewCell, a diferencia de en la TableView que devuelve un opcional)
+        // Get the cell that corresponds to the specified item in the collection view
+        // (unlike the UITableViewController, this always returns an UICollectionViewCell, not an optional)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
         
-        // Referencia a las vistas de la celda obtenida
+        // Reference to the cell UI elements
         let cellImage = cell.viewWithTag(100) as? UIImageView
         let cellLabel = cell.viewWithTag(200) as? UILabel
         
-        // Configuración de la celda:
-        // - Imagen (si la nota tiene una o sino una imagen por defecto, redimensionadas para entrar en la celda)
-        // - Texto (número de página, fecha de modificación y contenido de la nota)
+        // Cell setup: show the note image (re-escalated) and a text under it with
+        // the page number, modification date and the beginning of the note text
         let thumbnail: UIImage
         let thumbnailSize = CGSize(width: imageWidth, height: imageHeight)
         
@@ -101,20 +97,18 @@ extension NotesViewController {
         
         var noteText = note.text
         if noteText == nil || noteText == "" {   noteText = "<No text>"  }
-        cellLabel?.text = "Page: \(note.page)\n\(Utils.dateToString(note.modificationDate!))\n\(noteText!)"
+        cellLabel?.text = "Page: \(note.page)\n\(Utils.dateToString(note.modificationDate!))\n\n\(noteText!)"
         
-        // Devolver la celda
+        
         return cell
     }
     
     
-    // Acción a realizar cuando se selecciona la celda de una nota
+    // What to do when a cell is selected -> show a new screen with the detail of the selected note
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        // Obtener la nota seleccionada
         let selectedNote = fetchedResultsController?.object(at: indexPath) as! Note
         
-        // Crear el controlador para mostrar la nota seleccionada, y mostrarlo
         let noteVC = NoteViewController(currentNote: selectedNote, bookTitle: title!, isNewNote: false, context: (fetchedResultsController?.managedObjectContext)! )
         
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Save",

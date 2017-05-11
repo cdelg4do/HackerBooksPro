@@ -3,24 +3,23 @@
 //  HackerBooksPro
 //
 //  Created by Carlos Delgado on 06/10/16.
-//  Copyright © 2016 KeepCoding. All rights reserved.
 //
 
 import UIKit
-
 import MapKit
 
 
+// This class is the view controller to show a map with a note location
+
 class NoteMapViewController: UIViewController {
     
-    //MARK: Propiedades
     var currentNote: Note
     
-    // Referencia a los objetos de la interfaz
+    // Reference to UI elements
     @IBOutlet weak var mapView: MKMapView!
     
     
-    //MARK: Inicializadores
+    //MARK: Initializers
 
     init(currentNote: Note) {
         
@@ -34,31 +33,32 @@ class NoteMapViewController: UIViewController {
     }
 
     
-    // Ciclo de vida del controlador
+    // Controller lifecycle events
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Añadimos al mapa el objeto que cumple con el protocolo MKAnnotation (la nota actual)
+        // Add to the map an object that implements the MKAnnotation protocol (the note itself)
         mapView.addAnnotation(currentNote)
         
-        // Indicamos al mapViewq -que implmenta el protocolo MKMapViewDelegate- cuál será su delegado
-        // (para poder personalizar las propiedades de la anotación: color, etc)
+        // Set the map delegate (implements the MKMapViewDelegate) as itself
+        // (to configure the annotation properties: color, etc)
         mapView.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        // Centrar la vista del mapa en la nota, mostrando un área alrededor
-        // En dos tiempos, primero una animación que centra la vista con un radio de 1.000 Km
-        // Después, otra anmación que amplía la vista hasta un radio de 2 Km
+        // Center the map view around the note location:
+        // - First, use an animation to center the view in an area of 1,000 x 1,000 km
+        // - Next, use an animation to zoom in till a radius of 2 x 2 km
         
         let bigRegion = MKCoordinateRegionMakeWithDistance(self.currentNote.coordinate, 1000000, 1000000)
         let smallRegion = MKCoordinateRegionMakeWithDistance(self.currentNote.coordinate, 2000, 2000)
         
         var delayInNanoSeconds = UInt64(1) * NSEC_PER_SEC
         var time = DispatchTime.now() + Double(Int64(delayInNanoSeconds)) / Double(NSEC_PER_SEC)
+        
         DispatchQueue.main.asyncAfter(deadline: time, execute: {
             
             self.mapView.setRegion(bigRegion, animated: true)
@@ -73,7 +73,6 @@ class NoteMapViewController: UIViewController {
         
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -81,54 +80,52 @@ class NoteMapViewController: UIViewController {
     }
     
     
+    // Actions from the UI elements
     
-    //MARK: Acciones a realizar al pulsar los botones del mapa
-    
+    // 'Map' button
     @IBAction func showMapView(_ sender: AnyObject) {
         
          mapView.mapType = .standard
     }
     
-    
+    // 'Satellite' button
     @IBAction func showSatelliteView(_ sender: AnyObject) {
         
          mapView.mapType = .satellite
     }
     
-    
+    // 'Hybrid' button
     @IBAction func showHybridView(_ sender: AnyObject) {
         
         mapView.mapType = .hybrid
     }
-
 }
 
 
-
-// Implementación del protocolo de delegado de MKMapView
-// (para poder personalizar las anotaciones que se muestran en el mapa)
+//MARK: Implementation of the MKMapViewDelegate protocol (to configure the map annotations)
 
 extension NoteMapViewController: MKMapViewDelegate {
     
-    // El MapView funciona similar a una TableView, reciclando anotaciones
+    // The MapView works like a TableView, recycling annotations
     public func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         let reuseId = "MyNote"
         
-        // Forzamos el cast porque sino devuelve la superclase MKAnnotationView
-        // (y en caso de ser nil, nos interesa configurarla como MKPinAnnotationView)
+        // The function dequeueReusableAnnotationView() returns the superclass MKAnnotationView
+        // (but we will use the sublclass MKPinAnnotationView on our map, so use the as? to downcast it)
         var noteView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
         
         if noteView == nil {
             
-            // La creamos de cero, y le asignamos el color púrpura
+            // Create the annotation as a MKPinAnnotationView
+            // (a configurable type of MKAnnotationView that displays a pin icon on the map)
             noteView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            noteView?.pinTintColor = MKPinAnnotationView.purplePinColor()
             
-            // Al ser una anotación personalizada se le indica explícitamente que muestre el callout al ser pulsada
+            // Set the pin color and set the callout to show when the user touches the pin
+            noteView?.pinTintColor = MKPinAnnotationView.purplePinColor()
             noteView?.canShowCallout = true
             
-            // Personalización del callout (miniatura de la imagen de la nota)
+            // Callout setup: show a thumbnail of the note image (use the default image if needed)
             var thumbnail: UIImage
             let thumbnailSize = CGSize(width: 50, height: 50)
             
