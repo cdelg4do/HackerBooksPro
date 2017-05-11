@@ -8,7 +8,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NoteMapViewController" customModule="HackerBooksPro" customModuleProvider="target">
             <connections>
+                <outlet property="hybridViewBtn" destination="m1e-LN-yBe" id="HVj-0W-csi"/>
                 <outlet property="mapView" destination="m7R-Bc-9Dc" id="gSg-Zv-Qgp"/>
+                <outlet property="mapViewBtn" destination="Pvd-bR-ZNo" id="qta-Z1-3Zm"/>
+                <outlet property="satelliteViewBtn" destination="kF8-IB-qtH" id="ipR-bK-tun"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

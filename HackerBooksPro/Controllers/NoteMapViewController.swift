@@ -17,7 +17,9 @@ class NoteMapViewController: UIViewController {
     
     // Reference to UI elements
     @IBOutlet weak var mapView: MKMapView!
-    
+    @IBOutlet weak var mapViewBtn: UIBarButtonItem!
+    @IBOutlet weak var satelliteViewBtn: UIBarButtonItem!
+    @IBOutlet weak var hybridViewBtn: UIBarButtonItem!
     
     //MARK: Initializers
 
@@ -77,6 +79,10 @@ class NoteMapViewController: UIViewController {
         super.viewDidLoad()
 
         title = "Location for note at page \(currentNote.page)"
+        
+        mapViewBtn.isEnabled = false
+        satelliteViewBtn.isEnabled = true
+        hybridViewBtn.isEnabled = true
     }
     
     
@@ -85,19 +91,31 @@ class NoteMapViewController: UIViewController {
     // 'Map' button
     @IBAction func showMapView(_ sender: AnyObject) {
         
-         mapView.mapType = .standard
+        mapView.mapType = .standard
+        
+        mapViewBtn.isEnabled = false
+        satelliteViewBtn.isEnabled = true
+        hybridViewBtn.isEnabled = true
     }
     
     // 'Satellite' button
     @IBAction func showSatelliteView(_ sender: AnyObject) {
         
-         mapView.mapType = .satellite
+        mapView.mapType = .satellite
+        
+        mapViewBtn.isEnabled = true
+        satelliteViewBtn.isEnabled = false
+        hybridViewBtn.isEnabled = true
     }
     
     // 'Hybrid' button
     @IBAction func showHybridView(_ sender: AnyObject) {
         
         mapView.mapType = .hybrid
+        
+        mapViewBtn.isEnabled = true
+        satelliteViewBtn.isEnabled = true
+        hybridViewBtn.isEnabled = false
     }
 }
 

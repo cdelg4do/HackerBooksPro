@@ -52,7 +52,7 @@ class NotesViewController: CoreDataCollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = self.bookTitle
+        title = "My notes on this book"
         
         // Tell the collection view to create cells of the given type using the "NoteCell" xib file
         // and set the collection view background color
