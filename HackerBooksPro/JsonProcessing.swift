@@ -171,6 +171,7 @@ func decodeBook(fromElement json: JsonDictionary, inContext context: NSManagedOb
         else                 {  thisAuthor = result.first!                                  }
         
         newBook.addToAuthors(thisAuthor)
+        context.processPendingChanges()
     }
     
     
@@ -194,6 +195,7 @@ func decodeBook(fromElement json: JsonDictionary, inContext context: NSManagedOb
         else                 {  thisTag = result.first!                                                     }
         
         let _ = BookTag(book: newBook, tag: thisTag, inContext: context)
+        context.processPendingChanges()
     }
 }
 
