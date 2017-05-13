@@ -2,11 +2,11 @@
 
 This is a more complex prototype of ebook reader for iPhone made in Swift 3 and based on the <a href="https://github.com/cdelg4do/HackerBooks">HackerBooks project</a>.
 
-Apart from the functionalities of the previous version, it enables the user to create annotations tied to a specific page of a book. These annotations can store both a text written by the user and an image from the device gallery. Every time the user moves to a page that already has an annotation, the app offers the option to view/edit it.
+Apart from the functionalities of the previous version, it enables the user to create annotations tied to a specific page of a book. These annotations can store both a text written by the user and an image from the device gallery. Every time the user moves to a page that already has an annotation, the app offers the option to view/edit it. It is possible to visualize a map with the location where the annotation was made.
 
-Also, the user can visualize a grid list with all the annotations made on a book, including their modification date, the page number they belong to, a small portion of the text and, if the annotation has a picture, a thumbnail of it. This list is sorted by page number.
+Also, the user can check all the annotations made on a book through a grid list (sorted by page number) that include their modification date, the page number they belong to, a small portion of the text and, if the annotation has a picture, a thumbnail of it.
 
-This version uses Core Data to manage the model layer objects and their persistence. All heavy operations, like JSON parsing, image & PDF downloads, are performed in backgorund using Grand Central Dispatch (GCD) queues.
+This version uses Core Data to manage the model layer objects and their persistence. All heavy operations, like JSON parsing, image & PDF downloads, are performed in background using Grand Central Dispatch (GCD) queues.
 
 &nbsp;
 ### Screenshots:
