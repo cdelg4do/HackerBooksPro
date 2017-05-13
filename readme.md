@@ -1,27 +1,33 @@
-# Práctica iOS Avanzado de Carlos Delgado Andrés
+# HackerBooks Pro
 
-**HackerBooksPro** es un prototipo de aplicación para iOS realizada en Swift 3.0 y Xcode 8.
+This is a more complex prototype of ebook reader for iPhone made in Swift 3 and based on the <a href="https://github.com/cdelg4do/HackerBooks">HackerBooks project</a>.
 
-Se trata de un lector de libros en PDF para iPhone, evolución del anterior *HackerBooks* realizado en Swift 2.2, que incorpora la búsqueda de libros por título, autor o tag, y la creación de notas con foto por parte del usuario.
+Apart from the functionalities of the previous version, it enables the user to create annotations tied to a specific page of a book. These annotations can store both a text written by the user and an image from the device gallery. Every time the user moves to a page that already has an annotation, the app offers the option to view/edit it.
 
-Se hace uso de *GCD* (Grand Central Dispatch) para la ejecución de procesos en 2º plano y de *Core Data* para la gestión y persistencia del modelo de datos.
+Also, the user can visualize a grid list with all the annotations made on a book, including their modification date, the page number they belong to, a small portion of the text and, if the annotation has a picture, a thumbnail of it. This list is sorted by page number.
 
-.
-#### Consideraciones adicionales:
+This version uses Core Data to manage the model layer objects and their persistence. All heavy operations, like JSON parsing, image & PDF downloads, are performed in backgorund using Grand Central Dispatch (GCD) queues.
 
-- Tras descargarse el JSON remoto, durante su procesamiento en segundo plano para la creación de los NSManagedObjects correspondientes, a veces se produce una excepción no controlada con el mensaje **"collection was mutated while being enumerated"**. Parece que es algún problema con el multiproceso (como si en determinadas ocasiones se estuviera modificando un objeto mientras se ejecuta un fetch). He intentado depurar este bug pero sigue apareciendo ocasionalmente.
+&nbsp;
+### Screenshots:
 
-- No se ha implementado el formulario de búsqueda en la primera pantalla de la app. He intentado conectar el UISearchController con el CoreDataTableViewController utilizando un NSFetchedResultsController específico para las búsquedas, pero no funcionaba.
+<kbd> <img alt="screenshot 1" src="https://cloud.githubusercontent.com/assets/18370149/26028811/08f3a5ec-3828-11e7-8e83-05b080fd29e0.png" width="256"> </kbd> &nbsp; <kbd> <img alt="screenshot 2" src="https://cloud.githubusercontent.com/assets/18370149/26028812/08f4f262-3828-11e7-808a-d6f1fc8ff141.png" width="256"> </kbd> &nbsp; <kbd> <img alt="screenshot 3" src="https://cloud.githubusercontent.com/assets/18370149/26028814/08f8e35e-3828-11e7-835b-89cf79b7e5b5.png" width="256"> </kbd>
 
-- Una vez cargado todo el modelo de datos a partir del Json, cuando se invoca a CoreDataStack.save() antes de cerrar la aplicación (en el método applicationWillTerminate() del appDelegate) los datos se persisten en el fichero SQLite. Sin embargo, cuando en la siguiente ejecución se intenta cargar los datos de este almacén, la tabla con los libros aparece vacía. No se si el fallo se debe a algún problema con el CoreDataStack o con mi implementación, ya que la operación no genera ningún error ni excepción.
+&nbsp;
+<kbd> <img alt="screenshot 4" src="https://cloud.githubusercontent.com/assets/18370149/26028813/08f7ea30-3828-11e7-8345-5cef98538c63.png" width="256"> </kbd> &nbsp; <kbd> <img alt="screenshot 5" src="https://cloud.githubusercontent.com/assets/18370149/26028816/08ff8664-3828-11e7-8f8b-53cd5e778d7f.png" width="256"> </kbd> &nbsp; <kbd> <img alt="screenshot 6" src="https://cloud.githubusercontent.com/assets/18370149/26028815/08fba738-3828-11e7-8aeb-8b92bb6efffc.png" width="256"> </kbd>
+  
+&nbsp;
+<kbd> <img alt="screenshot 7" src="https://cloud.githubusercontent.com/assets/18370149/26028817/0909e046-3828-11e7-81b6-a6efcfa86851.png" width="256"> </kbd> &nbsp; <kbd> <img alt="screenshot 8" src="https://cloud.githubusercontent.com/assets/18370149/26028818/090c0dda-3828-11e7-9bb9-4f62e280d665.png" width="256"> </kbd> &nbsp; <kbd> <img alt="screenshot 9" src="https://cloud.githubusercontent.com/assets/18370149/26028819/09142a24-3828-11e7-9f76-1c709aba1388.png" width="256"> </kbd>
 
-- A falta de resolver este problema, se ha comentado la línea que registra en el **UserDefaults** el flag que indica que la aplicación ya se ejecutó una vez. De este modo, en cada nueva ejecución vuelven a descargarse todos los datos del Json (para evitar que la app solo pueda usarse la primera vez).
+&nbsp;
+#### Additional considerations:
 
-- Todas las tareas "pesadas" se realizan en segundo plano: descarga del Json remoto, creación de los NSManagedObjects, descarga de PDFs y descarga de las imágenes de portada de los libros.
+- In order to avoid memory overload when loading images (for both covers or annotations), each image is resized to fit inside the screen dimensions before being stored in the model.
 
-- Para prevenir problemas de memoria al cargar imágenes -tanto imágenes de portada de libros como imágenes adjuntadas a las notas-, antes de mostrar y de guardar cada imagen en el modelo se redimensionan de forma que en ningún caso excedan las dimensiones de la pantalla, manteniendo la relación de aspecto original (ver **Utils.resizeImage()**).
+&nbsp;
+#### To-Do list:
 
-- Cada anotación está asociada a un libro **y a una página** concretos. Cuando se está visualizando el PDF de un libro, si la página actual tiene una nota asociada, se activará el botón de Ver Nota. En caso contrario, será el botón de Crear Nota el que se active.
+- Add a UISearchController to the library, in order to filter books by name, authors or tags.
 
-- En la colección de notas de un libro, se muestran todas las notas ordenadas por la página a la que corresponden, de menor a mayor.
+- There is a bug when loading locally stored data from previous executions into the Core Data model (NSInvalidArgumentException: unrecognized selector sent to instance). While this is fixed, the autosave has been diabled, making the app to download again all data on each execution.
 
